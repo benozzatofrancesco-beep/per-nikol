@@ -363,11 +363,35 @@ const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto
     <input type="hidden" name="_captcha" value="false">
     <input type="hidden" name="_next" value="${base}?inviato=1">
     <button type="submit" class="go" id="invia">invia</button><div class="stato" id="stato"></div>`;
-  form.addEventListener("submit", ()=>{
+  let inviando = false;
+  form.addEventListener("submit", async e=>{
+    const btn = form.querySelector("#invia"), stato = form.querySelector("#stato");
     form.querySelector("#f-risposta").value = scelta === "si" ? "Continua il tuo percorso. Potremo rincontrarci in futuro." : "No, Francesco. Per me basta, per sempre.";
     form.querySelector("#f-voto").value = (voto || "nessuno") + "/10";
     if(!form.querySelector("#msg").value.trim()) form.querySelector("#msg").value = "(nessun messaggio)";
-    form.querySelector("#invia").textContent = "invio in corso…";
+    if(form.dataset.classico) return;            // ripiego: invio classico, lascia fare al browser
+    e.preventDefault();
+    if(inviando) return; inviando = true;
+    btn.disabled = true; btn.textContent = "invio in corso…"; stato.textContent = "";
+    const dati = Object.fromEntries(new FormData(form).entries());
+    delete dati._next;
+    try{
+      const ctl = new AbortController(); const t = setTimeout(()=> ctl.abort(), 15000);
+      const r = await fetch("https://formsubmit.co/ajax/" + EMAIL, {
+        method:"POST", signal: ctl.signal,
+        headers:{"Content-Type":"application/json","Accept":"application/json"},
+        body: JSON.stringify(dati)
+      });
+      clearTimeout(t);
+      const j = await r.json().catch(()=>({}));
+      if(!r.ok || String(j.success) !== "true") throw 0;
+      show("v-fine"); burst(document.querySelector("#v-fine h1"), true);
+    }catch(_){
+      // ripiego: invio classico (più lento, fino a un minuto)
+      stato.textContent = "ci vuole un attimo, fino a un minuto: non chiudere la pagina";
+      form.dataset.classico = "1";
+      HTMLFormElement.prototype.submit.call(form);
+    }
   });
 
   document.querySelectorAll("[data-scelta]").forEach(b=> b.addEventListener("click", ()=>{
