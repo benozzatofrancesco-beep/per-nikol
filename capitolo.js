@@ -66,15 +66,41 @@
     setTimeout(vai, 6000);
   }
 
+  /* --- a fine capitolo: il successivo parte da solo, in dissolvenza --- */
+  const nextLink = document.querySelector("a.next");
+  if(nextLink && "IntersectionObserver" in window){
+    const nav = nextLink.closest("nav");
+    const nota = document.createElement("p");
+    nota.className = "auto-next"; nota.textContent = "il prossimo capitolo arriva…";
+    nav.after(nota);
+    let timer = null, partito = false;
+    const ATTESA = 4000;
+    const ferma = ()=>{ clearTimeout(timer); timer = null; nextLink.classList.remove("carica"); nota.classList.remove("on"); };
+    new IntersectionObserver(es=>{
+      if(partito || document.body.classList.contains("locked")) return;
+      if(es[0].isIntersecting){
+        if(timer) return;
+        nextLink.classList.add("carica"); nota.classList.add("on");
+        timer = setTimeout(()=>{ partito = true; vaiAvanti(nextLink.href); }, ATTESA);
+      } else ferma();
+    },{threshold:.9}).observe(nav);
+  }
+  let avviato = false;
+  function vaiAvanti(href){
+    if(avviato) return; avviato = true;
+    if(!song.paused) fade(0, 700);
+    setTimeout(()=> playTrans(href), song.paused ? 0 : 400);
+  }
+
   /* --- uscendo dal capitolo la canzone sfuma --- */
   document.addEventListener("click", e=>{
     const a = e.target.closest("a[href]"); if(!a || a.getAttribute("href").startsWith("#")) return;
     const next = a.classList.contains("next");
     if(song.paused && !next) return;
     e.preventDefault();
+    if(next){ vaiAvanti(a.href); return; }
     if(!song.paused) fade(0, 700);
-    if(next) setTimeout(()=> playTrans(a.href), song.paused ? 0 : 400);
-    else setTimeout(()=> location.href = a.href, 750);
+    setTimeout(()=> location.href = a.href, 750);
   });
 
   /* --- comparsa in ordine, dal primo all'ultimo --- */
