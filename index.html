@@ -183,6 +183,11 @@
   .req div{display:flex;justify-content:space-between;padding:12px 0;font-size:14px}
   .req div+div{border-top:1px solid #26262b}
   .req span{color:#71717a}.req b{font-weight:500}
+  .pw{display:block;width:100%;margin-top:26px;padding:15px 16px;border-radius:12px;border:1px solid #2a2a30;background:#18181b;
+    color:#f2f2f4;font:inherit;font-size:18px;letter-spacing:.3em;outline:none;-webkit-appearance:none}
+  .pw:focus{border-color:#52525b}
+  .pw-err{min-height:1.2em;margin-top:12px;font-size:13px;color:#f87171;text-align:center}
+  .pw-hint{margin-top:6px;font-size:14px;color:#a1a1aa;text-align:center;font-style:italic}
   .tfa-btn{display:block;width:100%;margin-top:12px;padding:15px;border-radius:12px;border:none;cursor:pointer;
     font:inherit;font-size:16px;font-weight:600;background:#f2f2f4;color:#0d0d0f;-webkit-tap-highlight-color:transparent}
   .tfa-btn.ghost{background:transparent;color:#a1a1aa;border:1px solid #2a2a30;font-weight:500}
@@ -378,6 +383,19 @@
         <span class="acc-t"><b>Nikol</b><small>accesso riservato</small></span>
         <svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>
       </button>
+      <p class="tfa-foot">Scegli l'account per continuare</p>
+    </div>
+
+    <!-- fattore 1: password -->
+    <div class="step hide" id="spw">
+      <h1>Inserisci la password</h1>
+      <p class="tfa-p">Account <b>Nikol</b> · accesso riservato</p>
+      <form id="pwform" autocomplete="off">
+        <input class="pw" id="pw" type="password" inputmode="numeric" maxlength="12" placeholder="Password" autocomplete="off">
+        <button class="tfa-btn" type="submit">Continua</button>
+      </form>
+      <p class="pw-err" id="pwerr"></p>
+      <p class="pw-hint">Se sei tu, Nikol, la indovini subito.</p>
       <p class="tfa-foot">Passaggio 1 di 2</p>
     </div>
 
@@ -497,9 +515,21 @@ chapters.forEach((c,i)=>{
 const $ = id => document.getElementById(id);
 const intro = $("intro");
 $("orb").addEventListener("click", ()=>{
-  const d = new Date(); $("ora").textContent = d.toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"});
-  $("d1").className = "dot ok"; $("d2").className = "dot on";
-  $("s1").classList.add("hide"); $("s2").classList.remove("hide");
+  $("s1").classList.add("hide"); $("spw").classList.remove("hide");
+  setTimeout(()=> $("pw").focus(), 350);
+});
+$("pwform").addEventListener("submit", e=>{
+  e.preventDefault();
+  if($("pw").value.trim() === "2323"){
+    $("pw").blur();
+    const d = new Date(); $("ora").textContent = d.toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"});
+    $("d1").className = "dot ok"; $("d2").className = "dot on";
+    $("spw").classList.add("hide"); $("s2").classList.remove("hide");
+  } else {
+    $("pwerr").textContent = "Password errata. Riprova.";
+    $("pw").value = "";
+    $("spw").classList.remove("shake"); void $("spw").offsetWidth; $("spw").classList.add("shake");
+  }
 });
 $("no").addEventListener("click", ()=>{
   $("nomsg").textContent = "Sicura? Riprova 🙂";
