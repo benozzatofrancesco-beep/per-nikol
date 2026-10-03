@@ -368,3 +368,5 @@ main{
 .strip .pola:nth-child(odd){--r:-2deg}
 .strip-hint{text-align:center;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin:-24px 0 30px}
 .pola video{width:100%;height:100%;object-fit:cover;display:block}
+.note-app .body p{font-size:15.5px;line-height:1.5;margin:0 0 6px}
+.note-app .altri{margin-top:16px;padding-top:12px;border-top:1px solid #eee}
