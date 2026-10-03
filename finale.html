@@ -357,6 +357,14 @@ const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto
     form.querySelector("#invia").textContent = "invio in corso…";
   });
 
+  document.querySelectorAll("[data-scelta]").forEach(b=> b.addEventListener("click", ()=>{
+    scelta = b.dataset.scelta;
+    try{ localStorage.setItem("pn-risposta", scelta); }catch(_){}
+    document.querySelector("#v-"+scelta+" .slot-form").appendChild(form);
+    form.classList.remove("in");
+    show("v-"+scelta);
+  }));
+
   /* tornata da FormSubmit dopo l'invio: mostra il grazie */
   if(new URLSearchParams(location.search).has("inviato")){
     $("#cover").classList.add("gone"); document.body.classList.remove("locked");
