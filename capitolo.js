@@ -45,10 +45,36 @@
     setTimeout(()=> cascade("main .reveal", 170), 350);
   });
 
+  /* --- transizione animata verso il capitolo successivo --- */
+  const num = (location.pathname.match(/capitolo-(\d+)/) || [])[1];
+  let trans = null;
+  if(num){
+    trans = document.createElement("div"); trans.className = "trans";
+    trans.innerHTML = `<video src="transizioni/t${num}.mp4?v=1" muted playsinline preload="auto"></video>`;
+    document.body.appendChild(trans);
+  }
+  function playTrans(href){
+    const v = trans && trans.querySelector("video");
+    if(!v){ location.href = href; return; }
+    let andato = false; const vai = ()=>{ if(andato) return; andato = true; location.href = href; };
+    trans.classList.add("on");
+    v.currentTime = 0;
+    v.play().catch(vai);
+    v.addEventListener("ended", ()=>{ v.classList.add("out"); setTimeout(vai, 450); }, {once:true});
+    v.addEventListener("error", vai, {once:true});
+    trans.addEventListener("click", vai, {once:true});   // un tocco salta la transizione
+    setTimeout(vai, 6000);
+  }
+
   /* --- uscendo dal capitolo la canzone sfuma --- */
   document.addEventListener("click", e=>{
-    const a = e.target.closest("a[href]"); if(!a || song.paused || a.getAttribute("href").startsWith("#")) return;
-    e.preventDefault(); fade(0, 700); setTimeout(()=> location.href = a.href, 750);
+    const a = e.target.closest("a[href]"); if(!a || a.getAttribute("href").startsWith("#")) return;
+    const next = a.classList.contains("next");
+    if(song.paused && !next) return;
+    e.preventDefault();
+    if(!song.paused) fade(0, 700);
+    if(next) setTimeout(()=> playTrans(a.href), song.paused ? 0 : 400);
+    else setTimeout(()=> location.href = a.href, 750);
   });
 
   /* --- comparsa in ordine, dal primo all'ultimo --- */
