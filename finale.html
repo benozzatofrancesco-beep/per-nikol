@@ -266,8 +266,9 @@ const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto
   if(bgp){ const im = new Image(); im.onload = ()=> bgp.style.backgroundImage = `url(${bgp.dataset.src})`; im.src = bgp.dataset.src; }
 
   /* --- musica --- */
-  function fade(to, ms, a){ a = a || song; const from = a.volume, t0 = performance.now();
-    (function step(t){ const k = Math.min(1,(t-t0)/ms); a.volume = from + (to-from)*k; if(k<1) requestAnimationFrame(step); })(t0); }
+  function fade(to, ms, a){ a = a || song; clearInterval(a._f); const from = a.volume, t0 = Date.now();
+    a._f = setInterval(()=>{ const k = Math.min(1,(Date.now()-t0)/ms); try{ a.volume = from + (to-from)*k; }catch(_){}
+      if(k>=1) clearInterval(a._f); }, 40); }
   /* dalla domanda in poi: Alleria (Devastante sfuma) */
   function toAlleria(){
     if(song === alleria) return;

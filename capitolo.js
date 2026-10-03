@@ -16,8 +16,9 @@
 
   /* --- audio con fade (su iPhone il volume è fisso: parte/stacca e basta) --- */
   function fade(to, ms){
-    const from = song.volume, t0 = performance.now();
-    (function step(t){ const k = Math.min(1,(t-t0)/ms); song.volume = from + (to-from)*k; if(k<1) requestAnimationFrame(step); })(t0);
+    clearInterval(song._f); const from = song.volume, t0 = Date.now();
+    song._f = setInterval(()=>{ const k = Math.min(1,(Date.now()-t0)/ms); try{ song.volume = from + (to-from)*k; }catch(_){}
+      if(k>=1) clearInterval(song._f); }, 40);
   }
   function setPaused(p){
     musicBtn.classList.toggle("paused", p);
@@ -88,8 +89,13 @@
   let avviato = false;
   function vaiAvanti(href){
     if(avviato) return; avviato = true;
-    if(!song.paused) fade(0, 700);
-    setTimeout(()=> playTrans(href), song.paused ? 0 : 400);
+    // la canzone continua durante la transizione e sfuma insieme al video
+    playTrans(href);
+    if(!song.paused){
+      const v = trans && trans.querySelector("video");
+      const durata = (v && v.duration && isFinite(v.duration) ? v.duration : 3) * 1000;
+      setTimeout(()=> fade(0, Math.max(1200, durata - 400)), 400);
+    }
   }
 
   /* --- uscendo dal capitolo la canzone sfuma --- */

@@ -572,8 +572,9 @@ $("yes").addEventListener("click", ()=>{
 /* ---------- musica (Alleria) ---------- */
 const song = $("song"), musicBtn = $("music");
 function fade(to, ms){
-  const from = song.volume, t0 = performance.now();
-  (function step(t){ const k = Math.min(1,(t-t0)/ms); song.volume = from + (to-from)*k; if(k<1) requestAnimationFrame(step); })(t0);
+  clearInterval(song._f); const from = song.volume, t0 = Date.now();
+  song._f = setInterval(()=>{ const k = Math.min(1,(Date.now()-t0)/ms); try{ song.volume = from + (to-from)*k; }catch(_){}
+    if(k>=1) clearInterval(song._f); }, 40);
 }
 function startSong(){
   song.volume = 0;
