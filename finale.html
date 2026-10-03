@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Pinyon+Script&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="capitolo.css?v=18">
+<link rel="stylesheet" href="capitolo.css?v=19">
 <style>
   /* ---------- pagine interne ---------- */
   .view{display:none}
@@ -125,6 +125,11 @@
   .cv-fine{font-family:"Cormorant Garamond";font-style:italic;font-size:30px;color:#fff;padding-bottom:40px}
   .cv-fine span{display:block;font-family:"Pinyon Script",cursive;font-size:48px;color:var(--rose);margin-top:8px}
   .coda-esci{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:91;opacity:.45;white-space:nowrap;font-size:11px;padding:8px 14px;background:rgba(255,248,251,.18);color:#ffe3ee;box-shadow:none}
+  .cv-luna{margin:110px 0 90px;font-family:"Cormorant Garamond";font-style:italic;font-size:44px;line-height:1.15;color:#fff}
+  .cv-luna small{display:block;margin-top:16px;font-style:normal;font-size:24px;letter-spacing:.2em;color:var(--rose)}
+  .cv-moon{width:110px;height:110px;margin:0 auto 34px;border-radius:50%;
+    background:radial-gradient(circle at 38% 34%,#fffdf6 0%,#fff3e0 38%,#f7d9b8 70%,#e9bf98 100%);
+    box-shadow:0 0 50px 14px rgba(255,236,214,.55),0 0 140px 40px rgba(255,150,200,.35)}
   /* ---------- scrivimi ---------- */
   .form{margin-top:44px;padding:24px 20px;border-radius:24px;background:rgba(255,248,251,.85);
     backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 18px 50px rgba(140,42,94,.15)}
@@ -191,6 +196,11 @@
     </figure>
     <p class="txt reveal">Ma se non sarà così, ti ringrazio. Per questa fantastica storia che mi hai dato. Mi servirà.</p>
     <div class="quote reveal">Ti voglio<br>tantissimo bene.</div>
+    <div class="luna reveal">
+      <div class="moon"></div>
+      <div class="frase">Oggi la luna è bella,<br>vero?</div>
+      <div class="jp">月が綺麗ですね</div>
+    </div>
     <div class="firma reveal">Francesco</div>
     <button class="go reveal" data-go="v-voto">un'ultima cosa →</button>
   </section>
@@ -327,7 +337,7 @@
         <div class="cv-voce"><div class="cv-k">一日三秋</div><div class="cv-v">un giorno lontano da te dura come tre autunni · ❤️</div></div>
         <div class="cv-voce"><div class="cv-k">prima di uscire</div><div class="cv-v">“vorrei fossi qui con me a guardarlo”</div></div>
         <div class="cv-voce"><div class="cv-k">fuori dalla macchina</div><div class="cv-v">“sei bellissima”</div></div>
-        <div class="cv-voce"><div class="cv-k">29 aprile 2023</div><div class="cv-v">“che bello!”<br>e poi un bacio, su quella panchina</div></div>
+        <div class="cv-voce"><div class="cv-k">29 aprile 2023</div><div class="cv-v">“che bello!”<br>e poi un bacio, su quella panchina<br>“oggi la luna è bella, vero?”</div></div>
         <div class="cv-voce"><div class="cv-k">il concerto dei Coldplay</div><div class="cv-v">“ti amo”, la prima volta</div></div>
         <div class="cv-voce"><div class="cv-k">Praga</div><div class="cv-v">il nasino, il panino all'avocado<br>dieci su dieci</div></div>
         <div class="cv-voce"><div class="cv-k">10 febbraio 2024 · 01:18</div><div class="cv-v">“tengo ancora a te”</div></div>
@@ -349,6 +359,7 @@
         <div class="cv-sez">una storia di</div>
         <div class="cv-nomi">Francesco <small>&amp;</small> <span class="nikol">Nikol</span></div>
         <div class="cv-cina">一日三秋</div>
+        <div class="cv-luna"><div class="cv-moon"></div>Oggi la luna è bella,<br>vero?<small>月が綺麗ですね</small></div>
         <div class="cv-fine">Ti voglio bene.<br><span>Francesco</span></div>
       </div>
     </div>

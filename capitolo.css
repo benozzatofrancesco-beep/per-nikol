@@ -418,3 +418,13 @@ main{
 .cover.con-img .tap .label{color:var(--ink);padding:4px 14px;border-radius:999px;background:rgba(255,240,246,.55);
   backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .cover.con-img .cv-title{text-shadow:0 2px 24px rgba(255,240,246,.9)}
+
+/* ---------- la nostra frase: la luna ---------- */
+.luna{margin:46px 0 50px;text-align:center}
+.luna .moon{width:96px;height:96px;margin:0 auto 26px;border-radius:50%;
+  background:radial-gradient(circle at 38% 34%,#fffdf6 0%,#fff3e0 38%,#f7d9b8 70%,#e9bf98 100%);
+  box-shadow:0 0 40px 10px rgba(255,236,214,.75),0 0 110px 30px rgba(255,190,220,.45);animation:lunaRespira 5s ease-in-out infinite alternate}
+@keyframes lunaRespira{from{box-shadow:0 0 34px 8px rgba(255,236,214,.7),0 0 90px 24px rgba(255,190,220,.4)}to{box-shadow:0 0 52px 16px rgba(255,236,214,.9),0 0 140px 40px rgba(255,190,220,.55)}}
+.luna .frase{font-family:"Cormorant Garamond";font-style:italic;font-weight:500;font-size:40px;line-height:1.12;color:var(--ink)}
+.luna .jp{margin-top:14px;font-size:20px;letter-spacing:.18em;color:var(--fuchsia)}
+.luna .sp{margin-top:8px;font-family:"Cormorant Garamond";font-style:italic;font-size:17px;color:var(--ink2)}
