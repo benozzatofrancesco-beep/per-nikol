@@ -86,6 +86,45 @@
   .playlist img{width:100%;display:block;border-radius:4px}
   .playlist figcaption{margin-top:12px;padding:0 6px;font-family:"Cormorant Garamond";font-style:italic;font-size:18.5px;line-height:1.45;color:var(--ink2);text-align:center}
   .reveal.playlist.in{transform:rotate(-1.5deg)}
+  /* ---------- il nostro video (segnaposto) ---------- */
+  .nostro-video{position:relative;margin:26px auto 14px;width:78%;aspect-ratio:9/16;border-radius:22px;overflow:hidden;
+    background:radial-gradient(70% 50% at 30% 25%,rgba(255,255,255,.55),transparent 70%),
+               radial-gradient(60% 60% at 70% 75%,rgba(95,227,154,.35),transparent 70%),
+               linear-gradient(160deg,#ffc6dc,#e8177f);
+    box-shadow:0 26px 60px rgba(140,42,94,.3), 0 0 0 6px rgba(255,255,255,.6)}
+  .nostro-video::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);
+    background-size:250% 100%;animation:luccica 3.2s ease-in-out infinite}
+  @keyframes luccica{0%{background-position:120% 0}100%{background-position:-120% 0}}
+  .nv-play{position:absolute;left:50%;top:50%;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;display:grid;place-items:center;
+    background:rgba(255,255,255,.88);box-shadow:0 12px 30px rgba(90,15,54,.3);z-index:1}
+  .nv-play svg{width:28px;height:28px;fill:var(--fuchsia);margin-left:4px}
+  .nv-rec{position:absolute;top:16px;left:16px;font-family:"Jost";font-size:12px;letter-spacing:.15em;color:#fff;z-index:1;animation:blink 1.6s steps(1) infinite}
+  .nv-tc{position:absolute;bottom:16px;right:16px;font-family:"Jost";font-size:12px;letter-spacing:.1em;color:rgba(255,255,255,.9);z-index:1}
+  @keyframes blink{50%{opacity:.25}}
+  .nv-testo{text-align:center;font-family:"Cormorant Garamond";font-style:italic;font-size:23px;line-height:1.45;color:var(--ink);margin:18px 0 30px}
+  .nv-testo b{font-style:normal;font-weight:600;color:var(--fuchsia)}
+  .coda-btn{margin-top:30px;background:linear-gradient(135deg,#3a0c27,#8c2a5e)}
+
+  /* ---------- titoli di coda ---------- */
+  #v-coda.on{position:fixed;inset:0;z-index:90;background:#1a0812;animation:viewIn 1.2s ease}
+  .coda{position:absolute;inset:0;overflow:hidden;
+    -webkit-mask-image:linear-gradient(transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(transparent,#000 14%,#000 86%,transparent)}
+  .coda-roll{position:absolute;left:0;right:0;top:100%;padding:0 26px;text-align:center;color:#ffe3ee}
+  #v-coda.on .coda-roll{animation:scorri 95s linear forwards}
+  @keyframes scorri{from{transform:translateY(0)}to{transform:translateY(calc(-100% - 100vh))}}
+  .cv-top{font-family:"Cormorant Garamond";font-style:italic;font-size:32px;line-height:1.25;color:#fff;margin-bottom:80px}
+  .cv-voce{margin:0 0 46px}
+  .cv-k{font-family:"Jost";font-size:11px;letter-spacing:.38em;text-transform:uppercase;color:var(--rose)}
+  .cv-v{margin-top:8px;font-family:"Cormorant Garamond";font-style:italic;font-size:21px;line-height:1.45;color:#ffe3ee}
+  .cv-sez{margin:90px 0 26px;font-family:"Jost";font-size:12px;letter-spacing:.45em;text-transform:uppercase;color:var(--g2)}
+  .cv-song{display:flex;justify-content:space-between;gap:14px;max-width:340px;margin:0 auto 12px;font-family:"Cormorant Garamond";font-size:19px;color:#fff;text-align:left}
+  .cv-song i{color:#c98aa9;text-align:right;font-size:17px}
+  .cv-nomi{font-family:"Cormorant Garamond";font-style:italic;font-size:44px;color:#fff}
+  .cv-nomi small{font-size:.5em;color:var(--rose)}
+  .cv-cina{margin:70px 0;font-size:40px;letter-spacing:.2em;color:var(--rose)}
+  .cv-fine{font-family:"Cormorant Garamond";font-style:italic;font-size:30px;color:#fff;padding-bottom:40px}
+  .cv-fine span{display:block;font-family:"Pinyon Script",cursive;font-size:48px;color:var(--rose);margin-top:8px}
+  .coda-esci{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:91;opacity:.45;white-space:nowrap;font-size:11px;padding:8px 14px;background:rgba(255,248,251,.18);color:#ffe3ee;box-shadow:none}
   /* ---------- scrivimi ---------- */
   .form{margin-top:44px;padding:24px 20px;border-radius:24px;background:rgba(255,248,251,.85);
     backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 18px 50px rgba(140,42,94,.15)}
@@ -112,6 +151,7 @@
 
 <audio id="song" src="musica/finale.mp3?v=1" loop preload="auto" playsinline></audio>
 <audio id="song2" src="musica/telephones.mp3?v=1" loop preload="auto" playsinline></audio>
+<audio id="song3" src="musica/capitolo-6.mp3?v=5" preload="none" playsinline></audio>
 <button class="music" id="music" aria-label="Musica"><span class="bars"><i></i><i></i><i></i></span></button>
 
 <!-- ============ SCHERMATA TITOLO ============ -->
@@ -237,11 +277,19 @@
     <div class="big reveal">Ripartire da zero.<small>secondo me è il modo più giusto</small></div>
     <div class="quote reveal">Con calma. Tutto con calma.<br>Ricostruire la base da zero.</div>
     <p class="txt reveal">Perché anch'io sto ricostruendo la mia. E ho una paura immensa di perderti di nuovo.</p>
+    <div class="sub reveal">il nostro video</div>
+    <div class="nostro-video reveal">
+      <div class="nv-play"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></div>
+      <div class="nv-rec">● REC</div>
+      <div class="nv-tc">00:00:00:00</div>
+    </div>
+    <p class="nv-testo reveal">Qui dentro costruirò il nostro video.<br><b>Promesso.</b><br>Spero non sia troppo tardi…</p>
     <div class="sub reveal">il tempo</div>
     <p class="txt reveal">Aspetterò un tuo messaggio. Posso aspettare anche che finisca la tua esperienza. Tutto il tempo che ti serve per pensarci.</p>
     <p class="txt reveal">E se un giorno cambi idea, va bene. Riapri questo sito: in fondo all'indice c'è <em>“cambia la tua risposta”</em>. Lì puoi scegliere “No, basta per sempre”, quando vuoi.</p>
     <div class="firma reveal">Francesco</div>
     <div class="slot-form"></div>
+    <button class="go coda-btn" data-go="v-coda">▶ titoli di coda</button>
     <button class="back" data-go="v-domanda" style="margin-top:26px">← torna alla domanda</button>
   </section>
 
@@ -260,7 +308,51 @@
     <div class="firma reveal">Francesco</div>
     <p class="txt reveal" style="text-align:center">P.S. Puoi sempre usare il mio Adobe, comunque 🙂</p>
     <div class="slot-form"></div>
+    <button class="go coda-btn" data-go="v-coda">▶ titoli di coda</button>
     <button class="back" data-go="v-domanda" style="margin-top:26px">← torna alla domanda</button>
+  </section>
+
+
+  <!-- ============ TITOLI DI CODA ============ -->
+  <section class="view" id="v-coda">
+    <div class="coda">
+      <div class="coda-roll" id="roll">
+        <div class="cv-top">Grazie per questa storia<br>che mi hai fatto vivere.</div>
+        <div class="cv-voce"><div class="cv-k">il primo giorno</div><div class="cv-v">fuori da scuola, alle biciclette<br>la mascherina, la camicia a fiori, lo zainetto verde</div></div>
+        <div class="cv-voce"><div class="cv-k">il primo messaggio</div><div class="cv-v">“ehi, ma hai mai fatto scout?”<br>“no, non l'ho mai fatto”</div></div>
+        <div class="cv-voce"><div class="cv-k">in classe</div><div class="cv-v">“ehi, sapevo che volevi vedere il progetto… eccolo qui”</div></div>
+        <div class="cv-voce"><div class="cv-k">23:23</div><div class="cv-v">la notte prima degli esami</div></div>
+        <div class="cv-voce"><div class="cv-k">Monte Berico</div><div class="cv-v">le scalette, il video</div></div>
+        <div class="cv-voce"><div class="cv-k">26 marzo 2023</div><div class="cv-v">🔥 · “beh, Santa Marta e basta ahah”</div></div>
+        <div class="cv-voce"><div class="cv-k">一日三秋</div><div class="cv-v">un giorno lontano da te dura come tre autunni · ❤️</div></div>
+        <div class="cv-voce"><div class="cv-k">prima di uscire</div><div class="cv-v">“vorrei fossi qui con me a guardarlo”</div></div>
+        <div class="cv-voce"><div class="cv-k">fuori dalla macchina</div><div class="cv-v">“sei bellissima”</div></div>
+        <div class="cv-voce"><div class="cv-k">29 aprile 2023</div><div class="cv-v">“che bello!”<br>e poi un bacio, su quella panchina</div></div>
+        <div class="cv-voce"><div class="cv-k">il concerto dei Coldplay</div><div class="cv-v">“ti amo”, la prima volta</div></div>
+        <div class="cv-voce"><div class="cv-k">Praga</div><div class="cv-v">il nasino, il panino all'avocado<br>dieci su dieci</div></div>
+        <div class="cv-voce"><div class="cv-k">10 febbraio 2024 · 01:18</div><div class="cv-v">“tengo ancora a te”</div></div>
+        <div class="cv-voce"><div class="cv-k">settembre 2026</div><div class="cv-v">oggi ho scritto tutta la nostra storia</div></div>
+        <div class="cv-sez">colonna sonora</div>
+        <div class="cv-song"><span>Alleria</span><i>Pino Daniele</i></div>
+        <div class="cv-song"><span>Purpose Is Glorious</span><i>Natalie Holt</i></div>
+        <div class="cv-song"><span>Stand By Me</span><i>Ben E. King</i></div>
+        <div class="cv-song"><span>Upside Down</span><i>Jack Johnson</i></div>
+        <div class="cv-song"><span>Hai delle isole negli occhi</span><i>Tiziano Ferro</i></div>
+        <div class="cv-song"><span>Everything Is Romantic</span><i>Alina Kay</i></div>
+        <div class="cv-song"><span>Per te</span><i>Jovanotti</i></div>
+        <div class="cv-song"><span>Heaven</span><i>Bryan Adams</i></div>
+        <div class="cv-song"><span>Colapso</span><i>Kevin Kaarl</i></div>
+        <div class="cv-song"><span>Scott Street</span><i>Phoebe Bridgers</i></div>
+        <div class="cv-song"><span>Love Is in the Air, Pt. 1</span><i></i></div>
+        <div class="cv-song"><span>Devastante</span><i>Olly, JVLI</i></div>
+        <div class="cv-song"><span>Telephones</span><i>Vacations</i></div>
+        <div class="cv-sez">una storia di</div>
+        <div class="cv-nomi">Francesco <small>&amp;</small> <span class="nikol">Nikol</span></div>
+        <div class="cv-cina">一日三秋</div>
+        <div class="cv-fine">Ti voglio bene.<br><span>Francesco</span></div>
+      </div>
+    </div>
+    <button class="back coda-esci" data-go="v-lettera">↺ torna alla lettera</button>
   </section>
 
   <!-- ============ 5 · INVIATO ============ -->
@@ -272,6 +364,7 @@
     </header>
     <p class="txt" style="text-align:center">Mi è arrivato. Davvero, grazie.</p>
     <div class="firma" style="text-align:center">Francesco</div>
+    <button class="go coda-btn" data-go="v-coda">▶ titoli di coda</button>
   </section>
 
 </main>
@@ -337,8 +430,16 @@ const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto
   });
 
   /* --- cambio pagina --- */
+  function toPerTe(){
+    const p = $("#song3"); if(song === p) return;
+    const old = song; fade(0, 1200, old); setTimeout(()=> old.pause(), 1250);
+    song = p; p.volume = 0; p.currentTime = 0;
+    p.play().then(()=>{ fade(.9, 3000, p); musicBtn.classList.remove("paused"); }).catch(()=>{});
+  }
   function show(id){
     if(id === "v-domanda") toAlleria();
+    if(id === "v-coda") toPerTe();
+    if(id === "v-coda"){ const roll = $("#roll"); roll.style.animation = "none"; void roll.offsetWidth; roll.style.animation = ""; }
     document.querySelectorAll(".view").forEach(v=> v.classList.toggle("on", v.id === id));
     scrollTo({top:0, behavior:"instant"});
     cascade($("#"+id), 150);

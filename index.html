@@ -344,6 +344,11 @@
     box-shadow:0 6px 16px rgba(140,42,94,.22), 0 0 0 3px rgba(255,255,255,.75)}
   /* capolettera nella lettera */
   .letter .open-line + p::first-letter{float:left;font-size:3.4em;line-height:.82;padding:6px 8px 0 0;color:var(--fuchsia);font-style:italic}
+  /* ingresso animato */
+  .introvid{position:fixed;inset:0;z-index:65;background:#0d0d0f;opacity:0;pointer-events:none;transition:opacity .35s ease}
+  .introvid.on{opacity:1}
+  .introvid.via{opacity:0;transition:opacity 1.2s ease}
+  .introvid video{width:100%;height:100%;object-fit:cover;display:block}
   /* ---------- tasto musica ---------- */
   .music{
     position:fixed;z-index:70;top:calc(14px + env(safe-area-inset-top));right:14px;
@@ -380,6 +385,7 @@
 <div class="grain"></div>
 <canvas id="petals"></canvas>
 <audio id="song" src="musica/alleria.mp3?v=2" loop preload="auto" playsinline></audio>
+<div class="introvid"><video id="introvid" src="transizioni/intro.mp4?v=1" muted playsinline webkit-playsinline preload="auto"></video></div>
 <button class="music" id="music" aria-label="Musica"><span class="bars"><i></i><i></i><i></i></span></button>
 
 <!-- ============ AUTENTICAZIONE A DUE FATTORI (finta, stile normale) ============ -->
@@ -558,7 +564,22 @@ $("yes").addEventListener("click", ()=>{
   startSong();
   $("d2").className = "dot ok";
   $("s2").classList.add("hide"); $("s3").classList.remove("hide");
+  // ingresso animato (Kling): la spunta verde esplode in petali e diventa il sito rosa
+  const iv = $("introvid");
   setTimeout(()=>{
+    iv.parentNode.classList.add("on");
+    iv.currentTime = 0;
+    iv.play().catch(()=> apri());
+    iv.addEventListener("ended", apri, {once:true});
+    iv.addEventListener("error", apri, {once:true});
+    setTimeout(apri, 5000);
+  }, 900);
+});
+let aperto = false;
+function apri(){
+  if(aperto) return; aperto = true;
+  const iv = $("introvid");
+  {
     document.title = "Per Nikol";
     document.querySelector('meta[name="theme-color"]').content = "#ffd3e4";
     intro.classList.add("gone");
@@ -566,8 +587,10 @@ $("yes").addEventListener("click", ()=>{
     setTimeout(()=>{ burst(document.querySelector(".title")); }, 600);
     setTimeout(()=>cv.classList.add("behind"), 2400);
     cascade("main .reveal", 220);
-  }, 1600);
-});
+    setTimeout(()=> iv.parentNode.classList.add("via"), 50);
+    setTimeout(()=> iv.parentNode.remove(), 1400);
+  }
+}
 
 /* ---------- musica (Alleria) ---------- */
 const song = $("song"), musicBtn = $("music");
