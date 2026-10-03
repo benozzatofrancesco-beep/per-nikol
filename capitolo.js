@@ -51,8 +51,9 @@
   let trans = null;
   if(num){
     trans = document.createElement("div"); trans.className = "trans";
-    trans.innerHTML = `<video src="transizioni/t${num}.mp4?v=1" muted playsinline preload="auto"></video>`;
+    trans.innerHTML = `<video src="transizioni/t${num}.mp4?v=1" muted playsinline webkit-playsinline preload="auto" disableremoteplayback></video>`;
     document.body.appendChild(trans);
+    const tv = trans.querySelector("video"); tv.muted = true; tv.defaultMuted = true; tv.volume = 0;
   }
   function playTrans(href){
     const v = trans && trans.querySelector("video");
@@ -60,6 +61,13 @@
     let andato = false; const vai = ()=>{ if(andato) return; andato = true; location.href = href; };
     trans.classList.add("on");
     v.currentTime = 0;
+    v.muted = true;
+    // iPhone: se parte il video, Safari può mettere in pausa la canzone. La teniamo viva.
+    const suonava = !song.paused;
+    const tieniViva = ()=>{ if(suonava && song.paused && !andato) song.play().catch(()=>{}); };
+    v.addEventListener("playing", tieniViva);
+    const guardia = setInterval(tieniViva, 500);
+    setTimeout(()=> clearInterval(guardia), 6500);
     v.play().catch(vai);
     v.addEventListener("ended", ()=>{ v.classList.add("out"); setTimeout(vai, 450); }, {once:true});
     v.addEventListener("error", vai, {once:true});
