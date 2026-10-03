@@ -325,7 +325,8 @@ const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto
         method:"POST", headers:{"Content-Type":"application/json","Accept":"application/json"},
         body: JSON.stringify({_subject:"Risposta di Nikol", _template:"box", _captcha:"false", risposta, voto: (voto||"nessuno")+"/10", messaggio: msg || "(nessun messaggio)"})
       });
-      if(!r.ok) throw 0;
+      const j = await r.json().catch(()=>({}));
+      if(!r.ok || String(j.success) !== "true") throw 0;
       show("v-fine"); burst(document.querySelector("#v-fine h1"), true);
     }catch(_){
       btn.disabled = false;
