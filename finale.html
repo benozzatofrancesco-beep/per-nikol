@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Pinyon+Script&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="capitolo.css?v=8">
+<link rel="stylesheet" href="capitolo.css?v=9">
 <style>
   /* ---------- pagine interne ---------- */
   .view{display:none}
@@ -62,6 +62,17 @@
     display:grid;place-items:center;font-family:"Jost";font-size:13px;font-weight:500;color:#fff;
     background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.6),transparent 40%),linear-gradient(135deg,var(--g2),var(--g3))}
 
+  .prova{text-align:center;margin-top:6px;font-size:12px;letter-spacing:.08em;color:var(--muted);opacity:0;transition:opacity .6s}
+  .prova.on{opacity:1}
+  .tranquilla{margin:26px 0 8px;padding:20px 22px;border-radius:20px;background:rgba(255,248,251,.7);
+    border:1px dashed rgba(23,168,92,.45);font-family:"Cormorant Garamond";font-size:19px;line-height:1.5;color:#4a0e2e}
+  .tranquilla .k{font-family:"Jost";font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--g3);margin-bottom:8px}
+  .tranquilla p+p{margin-top:8px}
+  .back{display:inline-block;border:none;background:rgba(255,248,251,.75);padding:11px 16px;border-radius:999px;cursor:pointer;
+    font-family:"Jost";font-size:12px;letter-spacing:.12em;color:var(--ink2);box-shadow:0 6px 18px rgba(140,42,94,.12);
+    touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  .view > .back:first-child{margin-bottom:26px}
+
   /* ---------- scrivimi ---------- */
   .form{margin-top:44px;padding:24px 20px;border-radius:24px;background:rgba(255,248,251,.85);
     backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 18px 50px rgba(140,42,94,.15)}
@@ -111,12 +122,12 @@
     </header>
     <p class="txt reveal">In tutti gli altri capitoli ti ho già detto tanto. Ti ho detto tutto quello che volevo che sapessi. I miei ricordi, tutti.</p>
     <p class="txt reveal">Però voglio che tu sappia ancora una cosa.</p>
-    <div class="big reveal">In te vedo un grandissimo successo.<small>non lavorativo. personale.</small></div>
+    <div class="big reveal">In te vedo un grandissimo successo.<small>non solo lavorativo. soprattutto personale.</small></div>
     <p class="txt reveal">Sei una persona fantastica. Avrei moltissime cose da dirti, e non finirei più.</p>
     <div class="big reveal">Mi manchi<br>tantissimo.</div>
     <p class="txt reveal">Ti auguro di continuare il tuo percorso. E auguro a te, e anche a me, di migliorare. Di migliorarmi, fino a quando non starò bene.</p>
     <p class="txt reveal">E che i nostri percorsi, un po', si rincontrino.</p>
-    <figure class="foto reveal"><img src="foto/c11-1.jpg" alt=""><figcaption>due strade</figcaption></figure>
+    <figure class="foto reveal"><img src="foto/c11-1.jpg" alt="" decoding="async"><figcaption>due strade</figcaption></figure>
     <p class="txt reveal">Ma se non sarà così, ti ringrazio. Per questa fantastica storia che mi hai dato. Mi servirà.</p>
     <div class="quote reveal">Ti voglio<br>tantissimo bene.</div>
     <div class="firma reveal">Francesco</div>
@@ -133,7 +144,8 @@
     <p class="txt">Per tanto tempo il voto me l'hai dato tu. Sei su dieci, sette, otto, nove… e a Praga dieci.</p>
     <p class="txt">Adesso tocca ancora a te. Dai un voto a tutto questo.</p>
     <div class="stelle" id="stelle"></div>
-    <div class="commento" id="commento"><div class="hint">tocca una stella</div></div>
+    <div class="commento" id="commento"><div class="hint">provale un po' tutte:<br>sotto ogni stella ho scritto qualcosa</div></div>
+    <p class="prova" id="prova">provale tutte, sotto ognuna c'è qualcosa</p>
     <button class="go" id="go-voto" data-go="v-domanda" disabled>avanti →</button>
   </section>
 
@@ -148,6 +160,11 @@
     <p class="txt">Prima, però, voglio dirti una cosa. So quante cose vorresti scrivermi, del male che ti ho fatto. Le so tutte. So tutti i motivi per cui non vuoi continuare: me li hai detti mille volte, e me li hai ridetti anche alla fine. E mi hai già lasciato completamente a pezzi.</p>
     <p class="txt">Quindi, se la tua risposta è no, ti chiedo di non riscriverli tutti adesso, in un momento in cui sto malissimo. So già che il no viene da tutto questo.</p>
     <p class="txt">E se la tua risposta è sì, io non farò niente. Aspetterò semplicemente un tuo messaggio, e ti lascerò tranquilla. Nessuna pressione, da nessuna parte. Non ho fretta di niente.</p>
+    <div class="tranquilla">
+      <div class="k">prima di rispondere</div>
+      <p>Puoi aprirle tutte e due, tranquilla. La risposta non mi arriva quando la tocchi: mi arriva solo se poi premi <b>invia</b>.</p>
+      <p>Anche perché non è bello chiederti una risposta così netta, che magari non vuoi dare.</p>
+    </div>
     <p class="txt">Ci terrei che tu mi dicessi una cosa:</p>
     <button class="scelta si" data-scelta="si"><div class="k">risposta 1</div><div class="t">Continua il tuo percorso. Potremo rincontrarci in futuro.</div></button>
     <button class="scelta no" data-scelta="no"><div class="k">risposta 2</div><div class="t">No, Francesco. Per me basta, per sempre.</div></button>
@@ -156,6 +173,7 @@
 
   <!-- ============ 4a · SÌ ============ -->
   <section class="view" id="v-si">
+    <button class="back" data-go="v-domanda">← torna alla domanda</button>
     <header class="ch-head">
       <div class="n">risposta 1</div>
       <h1>Però…</h1>
@@ -178,12 +196,17 @@
     </ol>
     <div class="quote reveal">Con calma. Tutto con calma.<br>Ricostruire la base da zero.</div>
     <p class="txt reveal">Perché anch'io sto ricostruendo la mia. E ho una paura immensa di perderti di nuovo.</p>
+    <div class="sub reveal">il tempo</div>
+    <p class="txt reveal">Aspetterò un tuo messaggio. Posso aspettare anche che finisca la tua esperienza. Tutto il tempo che ti serve per pensarci.</p>
+    <p class="txt reveal">E se un giorno cambi idea, va bene. Riapri questo sito: in fondo all'indice c'è <em>“cambia la tua risposta”</em>. Lì puoi scegliere “No, basta per sempre”, quando vuoi.</p>
     <div class="firma reveal">Francesco</div>
     <div class="slot-form"></div>
+    <button class="back" data-go="v-domanda" style="margin-top:26px">← torna alla domanda</button>
   </section>
 
   <!-- ============ 4b · NO ============ -->
   <section class="view" id="v-no">
+    <button class="back" data-go="v-domanda">← torna alla domanda</button>
     <header class="ch-head">
       <div class="n">risposta 2</div>
       <h1>Grazie di tutto</h1>
@@ -191,9 +214,12 @@
     </header>
     <p class="txt reveal">Grazie. Per tutto. Per ogni capitolo che hai appena letto, e per tutti quelli che non ci stavano.</p>
     <div class="big reveal">Ti voglio bene.</div>
+    <p class="txt reveal">Però sono contento. Ho fatto qualcosa che non avevo mai fatto.</p>
+    <p class="txt reveal">All'inizio volevo farti un video. Ma ci avrei messo troppo tempo, e forse non l'avresti nemmeno apprezzato: sarebbe sembrato solo un modo per cercarti. Così ho fatto questo.</p>
     <div class="firma reveal">Francesco</div>
     <p class="txt reveal" style="text-align:center">P.S. Puoi sempre usare il mio Adobe, comunque 🙂</p>
     <div class="slot-form"></div>
+    <button class="back" data-go="v-domanda" style="margin-top:26px">← torna alla domanda</button>
   </section>
 
   <!-- ============ 5 · INVIATO ============ -->
@@ -251,7 +277,15 @@ const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto
   }
 
   /* --- inizio --- */
+  const diretta = location.hash === "#domanda";
+  if(diretta){ $(".cv-num").textContent = "la tua risposta"; $(".cv-title").textContent = "Puoi cambiarla"; }
   $("#tap").addEventListener("click", ()=>{
+    if(diretta){
+      song = alleria; alleria.volume = 0;
+      alleria.play().then(()=>{ fade(.85, 2500); musicBtn.classList.add("show"); }).catch(()=> musicBtn.classList.add("paused","show"));
+      $("#cover").classList.add("gone"); document.body.classList.remove("locked");
+      show("v-domanda"); return;
+    }
     song.volume = 0;
     song.play().then(()=>{ fade(.85, 2500); musicBtn.classList.add("show"); }).catch(()=> musicBtn.classList.add("paused","show"));
     burst($("#tap"));
@@ -296,6 +330,7 @@ const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto
       c.className = "commento" + (i===10 ? " dieci" : "");
       c.innerHTML = `<div class="n">${i}<span style="font-size:.4em">/10</span></div><div class="c">${commenti[i-1]}</div>`;
       $("#go-voto").disabled = false;
+      $("#prova").classList.add("on");
       if(i===10) burst(b, true);
     });
     box.appendChild(b);
@@ -310,6 +345,7 @@ const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto
     <button class="go" id="invia">invia</button><div class="stato" id="stato"></div>`;
   document.querySelectorAll("[data-scelta]").forEach(b=> b.addEventListener("click", ()=>{
     scelta = b.dataset.scelta;
+    try{ localStorage.setItem("pn-risposta", scelta); }catch(_){}
     document.querySelector("#v-"+scelta+" .slot-form").appendChild(form);
     form.classList.remove("in");
     show("v-"+scelta);
