@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffd3e4">
+<title>Lettera finale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Pinyon+Script&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="capitolo.css?v=8">
+<style>
+  /* ---------- pagine interne ---------- */
+  .view{display:none}
+  .view.on{display:block;animation:viewIn .9s ease}
+  @keyframes viewIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .firma{text-align:right;font-family:"Pinyon Script",cursive;font-size:46px;color:var(--rose);margin:10px 6px 30px}
+  .go{display:block;width:100%;margin:40px 0 10px;padding:19px;border:none;border-radius:18px;cursor:pointer;
+    font-family:"Jost";font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#fff;
+    background:linear-gradient(135deg,var(--rose),var(--fuchsia));box-shadow:0 14px 34px rgba(232,23,127,.32)}
+  .go[disabled]{opacity:0;pointer-events:none}
+  .go{transition:opacity .6s}
+
+  /* ---------- il voto a stelle ---------- */
+  .stelle{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:34px 0 10px;padding:22px 14px;border-radius:24px;
+    background:rgba(255,248,251,.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 18px 50px rgba(140,42,94,.15)}
+  .stella{border:none;background:none;cursor:pointer;padding:6px 0;display:flex;flex-direction:column;align-items:center;gap:4px;
+    -webkit-tap-highlight-color:transparent}
+  .stella svg{width:42px;height:42px;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+  .stella path{fill:rgba(140,42,94,.12);stroke:rgba(232,23,127,.35);stroke-width:1.2;transition:fill .3s}
+  .stella.on path{fill:url(#gst);stroke:none}
+  .stella.on svg{transform:scale(1.08)}
+  .stella.pop svg{animation:pop .45s}
+  @keyframes pop{40%{transform:scale(1.35) rotate(-8deg)}}
+  .stella span{font-size:11px;color:var(--muted);font-family:"Jost"}
+  .commento{min-height:150px;margin-top:22px;text-align:center}
+  .commento .n{font-family:"Jost";font-weight:300;font-size:64px;line-height:1;
+    background:linear-gradient(120deg,var(--rose),var(--fuchsia));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .commento .c{font-family:"Cormorant Garamond";font-style:italic;font-size:25px;line-height:1.35;color:var(--ink);margin-top:10px;padding:0 10px}
+  .commento.dieci .n{background:linear-gradient(120deg,var(--g4),var(--g3),var(--g2));-webkit-background-clip:text;background-clip:text}
+  .commento .hint{font-family:"Cormorant Garamond";font-style:italic;font-size:21px;color:var(--ink2);padding-top:30px}
+
+  /* ---------- la domanda ---------- */
+  .scelta{display:block;width:100%;text-align:left;margin-top:16px;padding:24px 22px;border-radius:22px;cursor:pointer;
+    font:inherit;border:1.5px solid transparent;-webkit-tap-highlight-color:transparent;transition:transform .3s, box-shadow .3s}
+  .scelta:active{transform:scale(.98)}
+  .scelta .k{font-family:"Jost";font-size:10px;letter-spacing:.35em;text-transform:uppercase}
+  .scelta .t{font-family:"Cormorant Garamond";font-size:26px;line-height:1.2;margin-top:8px}
+  .scelta.si{background:linear-gradient(140deg,#e9fff0,#c3f3d4);color:var(--g4);box-shadow:0 16px 40px rgba(11,107,61,.18)}
+  .scelta.si .k{color:var(--g3)}
+  .scelta.no{background:rgba(255,248,251,.85);color:var(--ink);border-color:rgba(232,23,127,.18);box-shadow:0 16px 40px rgba(140,42,94,.12)}
+  .scelta.no .k{color:var(--fuchsia)}
+  .sotto-no{margin:12px 6px 0;font-family:"Cormorant Garamond";font-style:italic;font-size:17.5px;line-height:1.55;color:var(--ink2)}
+
+  /* ---------- i cambiamenti ---------- */
+  .camb{list-style:none;counter-reset:c;margin:30px 0}
+  .camb li{counter-increment:c;position:relative;margin-top:12px;padding:20px 20px 20px 62px;border-radius:20px;
+    background:rgba(255,248,251,.8);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 12px 34px rgba(140,42,94,.1);
+    font-family:"Cormorant Garamond";font-size:19.5px;line-height:1.5;color:#4a0e2e}
+  .camb li::before{content:counter(c);position:absolute;left:18px;top:18px;width:30px;height:30px;border-radius:50%;
+    display:grid;place-items:center;font-family:"Jost";font-size:13px;font-weight:500;color:#fff;
+    background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.6),transparent 40%),linear-gradient(135deg,var(--g2),var(--g3))}
+
+  /* ---------- scrivimi ---------- */
+  .form{margin-top:44px;padding:24px 20px;border-radius:24px;background:rgba(255,248,251,.85);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 18px 50px rgba(140,42,94,.15)}
+  .form .k{font-family:"Jost";font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--fuchsia)}
+  .form h3{font-family:"Cormorant Garamond";font-weight:400;font-style:italic;font-size:28px;color:var(--ink);margin-top:6px}
+  .form textarea{display:block;width:100%;min-height:150px;margin-top:16px;padding:16px;border-radius:16px;resize:vertical;
+    border:1px solid rgba(232,23,127,.2);background:#fff;font-family:"Jost";font-size:16px;line-height:1.5;color:var(--ink);outline:none}
+  .form textarea:focus{border-color:var(--fuchsia)}
+  .form .go{margin-top:16px}
+  .form .stato{text-align:center;margin-top:12px;font-size:13px;color:var(--muted);min-height:1.2em}
+  .form .stato a{color:var(--fuchsia)}
+</style>
+</head>
+<body class="locked">
+
+<svg width="0" height="0" style="position:absolute"><defs>
+  <linearGradient id="gst" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5aa5"/><stop offset="1" stop-color="#e8177f"/></linearGradient>
+</defs></svg>
+
+<div class="bg"></div>
+<div class="bg-photo" data-src="foto/c11-sfondo.jpg"></div>
+<div class="bg-tint"></div>
+<canvas id="petals"></canvas>
+
+<audio id="song" src="musica/finale.mp3?v=1" loop preload="auto" playsinline></audio>
+<audio id="song2" src="musica/alleria.mp3?v=2" loop preload="auto" playsinline></audio>
+<button class="music" id="music" aria-label="Musica"><span class="bars"><i></i><i></i><i></i></span></button>
+
+<!-- ============ SCHERMATA TITOLO ============ -->
+<div class="cover" id="cover">
+  <div class="cv-num">dopo il capitolo X</div>
+  <div class="cv-title">Lettera finale</div>
+  <button class="tap" id="tap" aria-label="Tocca qui per iniziare">
+    <span class="circle"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
+    <span class="label">tocca qui per iniziare</span>
+  </button>
+</div>
+
+<main>
+
+  <!-- ============ 1 · LA LETTERA ============ -->
+  <section class="view on" id="v-lettera">
+    <header class="ch-head reveal">
+      <div class="n">lettera finale</div>
+      <h1>Per te</h1>
+      <div class="orn"></div>
+    </header>
+    <p class="txt reveal">In tutti gli altri capitoli ti ho già detto tanto. Ti ho detto tutto quello che volevo che sapessi. I miei ricordi, tutti.</p>
+    <p class="txt reveal">Però voglio che tu sappia ancora una cosa.</p>
+    <div class="big reveal">In te vedo un grandissimo successo.<small>non lavorativo. personale.</small></div>
+    <p class="txt reveal">Sei una persona fantastica. Avrei moltissime cose da dirti, e non finirei più.</p>
+    <div class="big reveal">Mi manchi<br>tantissimo.</div>
+    <p class="txt reveal">Ti auguro di continuare il tuo percorso. E auguro a te, e anche a me, di migliorare. Di migliorarmi, fino a quando non starò bene.</p>
+    <p class="txt reveal">E che i nostri percorsi, un po', si rincontrino.</p>
+    <figure class="foto reveal"><img src="foto/c11-1.jpg" alt=""><figcaption>due strade</figcaption></figure>
+    <p class="txt reveal">Ma se non sarà così, ti ringrazio. Per questa fantastica storia che mi hai dato. Mi servirà.</p>
+    <div class="quote reveal">Ti voglio<br>tantissimo bene.</div>
+    <div class="firma reveal">Francesco</div>
+    <button class="go reveal" data-go="v-voto">un'ultima cosa →</button>
+  </section>
+
+  <!-- ============ 2 · IL VOTO ============ -->
+  <section class="view" id="v-voto">
+    <header class="ch-head">
+      <div class="n">un'ultima cosa</div>
+      <h1>Il voto</h1>
+      <div class="orn"></div>
+    </header>
+    <p class="txt">Per tanto tempo il voto me l'hai dato tu. Sei su dieci, sette, otto, nove… e a Praga dieci.</p>
+    <p class="txt">Adesso tocca ancora a te. Dai un voto a tutto questo.</p>
+    <div class="stelle" id="stelle"></div>
+    <div class="commento" id="commento"><div class="hint">tocca una stella</div></div>
+    <button class="go" id="go-voto" data-go="v-domanda" disabled>avanti →</button>
+  </section>
+
+  <!-- ============ 3 · LA DOMANDA ============ -->
+  <section class="view" id="v-domanda">
+    <header class="ch-head">
+      <div class="n">la risposta</div>
+      <h1>Un'ultima domanda</h1>
+      <div class="orn"></div>
+    </header>
+    <p class="txt">Dopo questa pagina c'è una risposta definitiva. Qui si chiude il cerchio. E grazie per aver visto tutto, fino a qui.</p>
+    <p class="txt">Prima, però, voglio dirti una cosa. So quante cose vorresti scrivermi, del male che ti ho fatto. Le so tutte. So tutti i motivi per cui non vuoi continuare: me li hai detti mille volte, e me li hai ridetti anche alla fine. E mi hai già lasciato completamente a pezzi.</p>
+    <p class="txt">Quindi, se la tua risposta è no, ti chiedo di non riscriverli tutti adesso, in un momento in cui sto malissimo. So già che il no viene da tutto questo.</p>
+    <p class="txt">E se la tua risposta è sì, io non farò niente. Aspetterò semplicemente un tuo messaggio, e ti lascerò tranquilla. Nessuna pressione, da nessuna parte. Non ho fretta di niente.</p>
+    <p class="txt">Ci terrei che tu mi dicessi una cosa:</p>
+    <button class="scelta si" data-scelta="si"><div class="k">risposta 1</div><div class="t">Continua il tuo percorso. Potremo rincontrarci in futuro.</div></button>
+    <button class="scelta no" data-scelta="no"><div class="k">risposta 2</div><div class="t">No, Francesco. Per me basta, per sempre.</div></button>
+    <p class="sotto-no">Non ti preoccupare, davvero: dimmelo. Mi aiuterebbe a capire che è finita per sempre, perché un po' ci credo sempre. Se mi si chiudono le speranze, almeno ho finito. Non ti disturberò più, toglierò quella playlist su Spotify. E stai tranquilla: non mi farò del male. Starò male, sì, ma mi riprenderò. Preferisco mille volte che tu mi dica basta per sempre, piuttosto che illudermi perché hai paura che io stia male. Quindi dimmelo davvero, senza problemi.</p>
+  </section>
+
+  <!-- ============ 4a · SÌ ============ -->
+  <section class="view" id="v-si">
+    <header class="ch-head">
+      <div class="n">risposta 1</div>
+      <h1>Però…</h1>
+      <div class="orn"></div>
+    </header>
+    <div class="big reveal">ci saranno<br>dei cambiamenti.</div>
+    <p class="txt reveal">Se hai cliccato qui, so che qualcosa può ancora essersi creato. E non ho mai avuto così tanta paura di perderti come stavolta.</p>
+    <p class="txt reveal">Ho tante idee su quello che voglio fare. Eccole.</p>
+    <ol class="camb">
+      <li class="reveal">La sera, prima di dormire, ti scriverò un messaggio dove ti dedico qualcosa. Con calma: non per forza tutti i giorni. Non voglio pressarti.</li>
+      <li class="reveal">Non ti scriverò mai cose sull'amore, finché non sarai tu a scrivermele. Non siamo niente: devo ricominciare da zero per riconquistarti. E può anche essere che non succeda.</li>
+      <li class="reveal">Saranno messaggi semplici. Ti augurerò la giornata, e ci racconteremo le cose belle, quelle brutte, tutto.</li>
+      <li class="reveal">Ogni giorno scriverò come voglio migliorarmi, e cosa dobbiamo migliorare.</li>
+      <li class="reveal">Non ti deprimerò mai. Sarà solo raccontarci come andiamo.</li>
+      <li class="reveal">Non riprenderò mai il passato. Il passato è vero, non bisogna dimenticarlo. Ma ricominciare dal passato, adesso, sarebbe la cosa peggiore che possiamo fare. Sarà davvero un inizio da zero: ce lo siamo detti tante volte, anche tu, e non ci siamo mai riusciti.</li>
+      <li class="reveal">Nessuna fretta. Non ti chiederò mai di vederci.</li>
+      <li class="reveal">Voglio lasciarti vivere completamente la tua esperienza.</li>
+      <li class="reveal">Ti racconterò anche le mie cose: tra una settimana, forse già la prossima, dovrei partire per Milano.</li>
+      <li class="reveal">Vivrò sapendo che stavolta posso perderti. E con una voglia di riconquistarti a mille.</li>
+    </ol>
+    <div class="quote reveal">Con calma. Tutto con calma.<br>Ricostruire la base da zero.</div>
+    <p class="txt reveal">Perché anch'io sto ricostruendo la mia. E ho una paura immensa di perderti di nuovo.</p>
+    <div class="firma reveal">Francesco</div>
+    <div class="slot-form"></div>
+  </section>
+
+  <!-- ============ 4b · NO ============ -->
+  <section class="view" id="v-no">
+    <header class="ch-head">
+      <div class="n">risposta 2</div>
+      <h1>Grazie di tutto</h1>
+      <div class="orn"></div>
+    </header>
+    <p class="txt reveal">Grazie. Per tutto. Per ogni capitolo che hai appena letto, e per tutti quelli che non ci stavano.</p>
+    <div class="big reveal">Ti voglio bene.</div>
+    <div class="firma reveal">Francesco</div>
+    <p class="txt reveal" style="text-align:center">P.S. Puoi sempre usare il mio Adobe, comunque 🙂</p>
+    <div class="slot-form"></div>
+  </section>
+
+  <!-- ============ 5 · INVIATO ============ -->
+  <section class="view" id="v-fine">
+    <header class="ch-head" style="margin-top:20vh">
+      <div class="n">inviato</div>
+      <h1>Grazie</h1>
+      <div class="orn"></div>
+    </header>
+    <p class="txt" style="text-align:center">Mi è arrivato. Davvero, grazie.</p>
+    <div class="firma" style="text-align:center">Francesco</div>
+  </section>
+
+</main>
+
+<script>
+/* ============ impostazioni ============ */
+const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto e messaggio
+
+(function(){
+  const $ = s => document.querySelector(s);
+  let song = $("#song");
+  const musicBtn = $("#music"), alleria = $("#song2");
+  let voto = 0, scelta = "";
+
+  /* --- foto (se manca resta il gradiente) --- */
+  document.querySelectorAll(".foto img").forEach(img=> img.addEventListener("error", ()=> img.remove()));
+  const bgp = $(".bg-photo");
+  if(bgp){ const im = new Image(); im.onload = ()=> bgp.style.backgroundImage = `url(${bgp.dataset.src})`; im.src = bgp.dataset.src; }
+
+  /* --- musica --- */
+  function fade(to, ms, a){ a = a || song; const from = a.volume, t0 = performance.now();
+    (function step(t){ const k = Math.min(1,(t-t0)/ms); a.volume = from + (to-from)*k; if(k<1) requestAnimationFrame(step); })(t0); }
+  /* dalla domanda in poi: Alleria (Devastante sfuma) */
+  function toAlleria(){
+    if(song === alleria) return;
+    const old = song; fade(0, 900, old); setTimeout(()=> old.pause(), 950);
+    song = alleria; alleria.volume = 0;
+    alleria.play().then(()=>{ fade(.85, 2500, alleria); musicBtn.classList.remove("paused"); }).catch(()=> musicBtn.classList.add("paused"));
+  }
+  musicBtn.addEventListener("click", ()=>{
+    if(song.paused){ song.play(); fade(.85,800); musicBtn.classList.remove("paused"); }
+    else { song.pause(); musicBtn.classList.add("paused"); }
+  });
+
+  /* --- comparsa in ordine --- */
+  let scrollFn = null;
+  function cascade(root, gap){
+    const els = [...root.querySelectorAll(".reveal")];
+    let i = 0;
+    (function next(){ if(i>=els.length) return; els[i++].classList.add("in"); setTimeout(next, gap); })();
+    if(scrollFn) removeEventListener("scroll", scrollFn);
+    scrollFn = ()=>{ while(i<els.length && els[i].getBoundingClientRect().top < innerHeight*.95) els[i++].classList.add("in"); };
+    addEventListener("scroll", scrollFn, {passive:true});
+  }
+
+  /* --- inizio --- */
+  $("#tap").addEventListener("click", ()=>{
+    song.volume = 0;
+    song.play().then(()=>{ fade(.85, 2500); musicBtn.classList.add("show"); }).catch(()=> musicBtn.classList.add("paused","show"));
+    burst($("#tap"));
+    $("#cover").classList.add("gone");
+    document.body.classList.remove("locked");
+    setTimeout(()=> cascade($("#v-lettera"), 170), 350);
+  });
+
+  /* --- cambio pagina --- */
+  function show(id){
+    if(id === "v-domanda") toAlleria();
+    document.querySelectorAll(".view").forEach(v=> v.classList.toggle("on", v.id === id));
+    scrollTo({top:0, behavior:"instant"});
+    cascade($("#"+id), 150);
+  }
+  document.querySelectorAll("[data-go]").forEach(b=> b.addEventListener("click", ()=> show(b.dataset.go)));
+
+  /* --- le stelle --- */
+  const commenti = [
+    "Dai, non può fare così schifo.",
+    "Ma veramente?",
+    "Dai…",
+    "Vabbè, potevo fare meglio.",
+    "Almeno sei, dai. Almeno sei stelle.",
+    "Sufficiente.",
+    "Vabbè. Sette non è un brutto numero: è dal sette che hai iniziato ad alzarmi il voto. Sette su dieci, otto su dieci…",
+    "Otto. Beh, sono stato bravo.",
+    "Nove. Cosa manca per il dieci?",
+    "Dieci. Wow."
+  ];
+  const STAR = '<svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.5.8-4.8 4.5 1.2 6.5L12 17.3l-5.8 3.1 1.2-6.5L2.6 9.4l6.5-.8z"/></svg>';
+  const box = $("#stelle");
+  for(let i=1;i<=10;i++){
+    const b = document.createElement("button");
+    b.className = "stella"; b.setAttribute("aria-label", i+" stelle");
+    b.innerHTML = STAR + `<span>${i}</span>`;
+    b.addEventListener("click", ()=>{
+      voto = i;
+      box.querySelectorAll(".stella").forEach((s,k)=>{ s.classList.toggle("on", k < i); s.classList.remove("pop"); });
+      void b.offsetWidth; b.classList.add("pop");
+      const c = $("#commento");
+      c.className = "commento" + (i===10 ? " dieci" : "");
+      c.innerHTML = `<div class="n">${i}<span style="font-size:.4em">/10</span></div><div class="c">${commenti[i-1]}</div>`;
+      $("#go-voto").disabled = false;
+      if(i===10) burst(b, true);
+    });
+    box.appendChild(b);
+  }
+
+  /* --- invio alla mail --- */
+  // il modulo vive fuori dalle pagine finché non serve
+  const form = document.createElement("div");
+  form.className = "form reveal"; form.id = "form";
+  form.innerHTML = `<div class="k">se vuoi</div><h3>Scrivimi altro</h3>
+    <textarea id="msg" placeholder="Qui puoi scrivere quello che vuoi. Arriva solo a me."></textarea>
+    <button class="go" id="invia">invia</button><div class="stato" id="stato"></div>`;
+  document.querySelectorAll("[data-scelta]").forEach(b=> b.addEventListener("click", ()=>{
+    scelta = b.dataset.scelta;
+    document.querySelector("#v-"+scelta+" .slot-form").appendChild(form);
+    form.classList.remove("in");
+    show("v-"+scelta);
+  }));
+  form.addEventListener("click", async e=>{
+    if(e.target.id !== "invia") return;
+    const btn = e.target, stato = form.querySelector("#stato"), msg = form.querySelector("#msg").value.trim();
+    const risposta = scelta === "si" ? "Continua il tuo percorso. Potremo rincontrarci in futuro." : "No, Francesco. Per me basta, per sempre.";
+    const testo = `Risposta: ${risposta}\nVoto: ${voto || "nessuno"}/10\n\nMessaggio:\n${msg || "(nessun messaggio)"}`;
+    btn.disabled = true; stato.textContent = "invio in corso…";
+    try{
+      const r = await fetch("https://formsubmit.co/ajax/" + EMAIL, {
+        method:"POST", headers:{"Content-Type":"application/json","Accept":"application/json"},
+        body: JSON.stringify({_subject:"Risposta di Nikol", _template:"box", _captcha:"false", risposta, voto: (voto||"nessuno")+"/10", messaggio: msg || "(nessun messaggio)"})
+      });
+      if(!r.ok) throw 0;
+      show("v-fine"); burst(document.querySelector("#v-fine h1"), true);
+    }catch(_){
+      btn.disabled = false;
+      stato.innerHTML = `Non è partito. <a href="mailto:${EMAIL}?subject=${encodeURIComponent("Risposta di Nikol")}&body=${encodeURIComponent(testo)}">Invialo da qui</a>`;
+    }
+  });
+
+  /* --- petali --- */
+  const cv = $("#petals"), cx = cv.getContext("2d");
+  let W,H,DPR = Math.min(devicePixelRatio||1,2);
+  function size(){ W=innerWidth; H=innerHeight; cv.width=W*DPR; cv.height=H*DPR; cv.style.width=W+"px"; cv.style.height=H+"px"; cx.setTransform(DPR,0,0,DPR,0,0); }
+  size(); addEventListener("resize",size);
+  const palette = ["232,23,127","255,90,165","255,255,255","200,20,110","255,140,190"], green = ["95,227,154","23,168,92","214,255,226"];
+  function petal(x,y,fast,pal){ pal = pal || palette;
+    return { x: x ?? Math.random()*W, y: y ?? -20 - Math.random()*H, r: 5+Math.random()*8,
+      vx: fast ? (Math.random()-.5)*9 : -.3+Math.random()*.6, vy: fast ? -4-Math.random()*6 : .3+Math.random()*.6,
+      rot: Math.random()*6.28, vr:(Math.random()-.5)*.03, sway: Math.random()*6.28, c: pal[Math.random()*pal.length|0], a: .45+Math.random()*.4, fast }; }
+  let petals = Array.from({length: 22}, ()=>petal());
+  function burst(el, big){ const r = el.getBoundingClientRect(), x=r.left+r.width/2, y=r.top+r.height/3;
+    for(let i=0;i<(big?90:50);i++) petals.push(petal(x,y,true, i%3 ? palette : green)); }
+  function draw(p){ cx.save(); cx.translate(p.x,p.y); cx.rotate(p.rot); cx.fillStyle = `rgba(${p.c},${p.a})`;
+    cx.beginPath(); cx.moveTo(0,-p.r); cx.bezierCurveTo(p.r*.9,-p.r*.6, p.r*.7,p.r*.6, 0,p.r); cx.bezierCurveTo(-p.r*.7,p.r*.6, -p.r*.9,-p.r*.6, 0,-p.r); cx.fill(); cx.restore(); }
+  (function loop(){ cx.clearRect(0,0,W,H);
+    petals.forEach(p=>{ p.sway += .015; if(p.fast){ p.vy += .18; p.vx *= .985; } p.x += p.vx + Math.sin(p.sway)*.4; p.y += p.vy; p.rot += p.vr; draw(p); });
+    petals = petals.filter(p=> !(p.fast && p.y>H+30)); petals.forEach(p=>{ if(!p.fast && p.y>H+30){ p.y=-20; p.x=Math.random()*W; } });
+    requestAnimationFrame(loop); })();
+})();
+</script>
+</body>
+</html>

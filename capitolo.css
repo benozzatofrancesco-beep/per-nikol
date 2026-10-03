@@ -1,0 +1,358 @@
+/* ============ stile comune ai capitoli ============ */
+:root{
+  --bg1:#ffe3ee; --bg2:#ffc2da; --bg3:#ff9fc6;
+  --fuchsia:#e8177f; --rose:#ff5aa5;
+  --ink:#5a0f36; --ink2:#8c2a5e; --muted:#b0577f;
+  --g1:#d6ffe2; --g2:#5fe39a; --g3:#17a85c; --g4:#0b6b3d;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg1);color:var(--ink);
+  font-family:"Jost",system-ui,sans-serif;font-weight:300;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+body.locked{overflow:hidden}
+button{font:inherit;-webkit-tap-highlight-color:transparent}
+a{-webkit-tap-highlight-color:transparent}
+
+/* ---------- sfondo: foto sfocata + rosa ---------- */
+.bg{
+  position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(55vmax 45vmax at 10% 5%, rgba(255,255,255,.75), transparent 60%),
+    radial-gradient(60vmax 50vmax at 95% 90%, rgba(255,90,165,.45), transparent 60%),
+    radial-gradient(40vmax 35vmax at 70% 40%, rgba(95,227,154,.18), transparent 70%),
+    linear-gradient(170deg,var(--bg1) 0%, var(--bg2) 55%, var(--bg3) 100%);
+}
+.bg-photo{
+  position:fixed;inset:-40px;z-index:0;
+  background-size:cover;background-position:center;
+  filter:blur(26px) saturate(1.1);transform:scale(1.08);
+  opacity:.55;
+}
+.bg-tint{
+  position:fixed;inset:0;z-index:0;
+  background:linear-gradient(180deg,rgba(255,227,238,.55),rgba(255,180,212,.65));
+}
+#petals{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.75}
+
+/* ---------- schermata titolo ---------- */
+.cover{
+  position:fixed;inset:0;z-index:50;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  padding:calc(24px + env(safe-area-inset-top)) 24px calc(24px + env(safe-area-inset-bottom));
+  background:
+    radial-gradient(circle at 50% 38%, rgba(255,255,255,.85), transparent 55%),
+    linear-gradient(170deg,#ffe6f0 0%, #ffc6dc 60%, #ffa9cb 100%);
+  transition:opacity 1.4s ease, visibility 1.4s;
+}
+.cover.gone{opacity:0;visibility:hidden}
+.cv-num{
+  font-size:11px;letter-spacing:.55em;text-transform:uppercase;color:var(--fuchsia);font-weight:400;
+  opacity:0;animation:up 1.4s .2s forwards;
+}
+.cv-title{
+  font-family:"Cormorant Garamond",serif;font-weight:300;font-style:italic;
+  font-size:clamp(54px,16vw,84px);line-height:1;color:var(--ink);margin-top:22px;
+  opacity:0;animation:up 1.4s .5s forwards;
+}
+.cv-title.clock{
+  font-style:normal;font-weight:300;letter-spacing:.02em;font-variant-numeric:lining-nums tabular-nums;
+  background:linear-gradient(120deg,var(--g4),var(--g3) 40%,var(--g2) 70%,var(--g3));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  font-size:clamp(80px,26vw,130px);
+}
+.cv-title.clock .colon{animation:blink 2s steps(1) infinite}
+@keyframes blink{50%{opacity:.15}}
+.tap{
+  position:relative;margin-top:64px;border:none;background:none;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:22px;
+  opacity:0;animation:up 1.4s 1s forwards;
+}
+.tap .circle{
+  position:relative;width:78px;height:78px;border-radius:50%;
+  background:radial-gradient(circle at 32% 28%, rgba(255,255,255,.95) 0%, transparent 24%),
+             radial-gradient(circle at 50% 55%, var(--rose), var(--fuchsia) 60%, #a80d5a);
+  box-shadow:0 16px 40px rgba(232,23,127,.4), inset 0 -8px 18px rgba(90,0,45,.35);
+  display:grid;place-items:center;
+}
+.tap .circle::before,.tap .circle::after{
+  content:"";position:absolute;inset:-14px;border-radius:50%;border:1.5px solid rgba(232,23,127,.35);
+  animation:ring 2.6s ease-out infinite;
+}
+.tap .circle::after{animation-delay:1.3s}
+.tap svg{width:26px;height:26px;fill:#fff;margin-left:4px}
+.tap .label{font-family:"Cormorant Garamond";font-style:italic;font-size:22px;color:var(--ink2)}
+@keyframes ring{0%{transform:scale(.85);opacity:.9}100%{transform:scale(1.5);opacity:0}}
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+/* ---------- contenuto ---------- */
+main{
+  position:relative;z-index:3;max-width:480px;margin:0 auto;
+  padding:calc(90px + env(safe-area-inset-top)) 18px calc(80px + env(safe-area-inset-bottom));
+}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 1s ease, transform 1s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+.ch-head{text-align:center;margin-bottom:46px}
+.ch-head .n{font-size:11px;letter-spacing:.55em;text-transform:uppercase;color:var(--fuchsia);font-weight:400}
+.ch-head h1{
+  font-family:"Cormorant Garamond";font-weight:300;font-style:italic;
+  font-size:58px;line-height:1.02;color:var(--ink);margin-top:14px;
+}
+.ch-head h1.clock{font-style:normal;font-variant-numeric:lining-nums tabular-nums;
+  background:linear-gradient(120deg,var(--g4),var(--g3) 40%,var(--g2) 70%,var(--g3));
+  -webkit-background-clip:text;background-clip:text;color:transparent;font-size:84px}
+.ch-head .orn{width:46px;height:1px;margin:22px auto 0;background:linear-gradient(90deg,transparent,var(--fuchsia),transparent)}
+
+.txt{
+  font-family:"Cormorant Garamond",serif;font-size:20.5px;line-height:1.72;color:#4a0e2e;
+  padding:0 6px;margin:0 0 26px;
+}
+.txt em{color:var(--ink2)}
+.txt strong{font-weight:600;color:var(--fuchsia)}
+.nikol{font-style:italic;font-weight:500;
+  background:linear-gradient(120deg,var(--g4),var(--g3),var(--g2));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+
+.quote{
+  margin:40px 0;padding:30px 26px;border-radius:22px;text-align:center;
+  background:rgba(255,248,251,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  box-shadow:0 18px 50px rgba(140,42,94,.14);
+  font-family:"Cormorant Garamond";font-style:italic;font-size:26px;line-height:1.35;color:var(--fuchsia);
+}
+
+/* foto sfocata */
+.foto{
+  position:relative;margin:38px -2px;border-radius:24px;overflow:hidden;
+  aspect-ratio:4/5;
+  background:
+    radial-gradient(60% 50% at 30% 30%, rgba(255,255,255,.9), transparent 70%),
+    radial-gradient(50% 45% at 75% 70%, rgba(95,227,154,.55), transparent 70%),
+    radial-gradient(60% 60% at 60% 30%, rgba(255,90,165,.7), transparent 70%),
+    linear-gradient(160deg,#ffc6dc,#ff8fbf);
+  box-shadow:0 24px 60px rgba(140,42,94,.22);
+}
+.foto img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  filter:blur(6px) saturate(1.05);transform:scale(1.06);
+}
+.foto::after{ /* velo rosa */
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(255,200,225,.18),rgba(232,23,127,.22));
+  mix-blend-mode:soft-light;
+}
+.foto figcaption{
+  position:absolute;left:0;right:0;bottom:0;z-index:2;padding:40px 22px 20px;
+  background:linear-gradient(transparent,rgba(90,15,54,.45));
+  font-family:"Cormorant Garamond";font-style:italic;font-size:20px;color:#fff;
+}
+.foto.wide{aspect-ratio:3/2}
+
+/* canzone del capitolo */
+.canzone{
+  margin:56px 0 30px;padding:22px 20px;border-radius:22px;
+  display:flex;align-items:center;gap:16px;
+  background:rgba(255,248,251,.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  box-shadow:0 18px 50px rgba(140,42,94,.16), 0 0 0 1px rgba(232,23,127,.1);
+}
+.canzone .pp{
+  flex:none;width:54px;height:54px;border-radius:50%;border:none;cursor:pointer;
+  background:radial-gradient(circle at 32% 28%, rgba(255,255,255,.9) 0%, transparent 26%),
+             radial-gradient(circle at 50% 55%, var(--g2), var(--g3) 60%, var(--g4));
+  box-shadow:0 10px 24px rgba(11,107,61,.3);display:grid;place-items:center;
+}
+.canzone .pp svg{width:20px;height:20px;fill:#fff}
+.canzone .pp .i-play{margin-left:3px;display:none}
+.canzone.paused .pp .i-play{display:block}
+.canzone.paused .pp .i-pause{display:none}
+.canzone .k{font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--muted)}
+.canzone .t{font-family:"Cormorant Garamond";font-size:23px;line-height:1.15;color:var(--ink);margin-top:4px}
+.canzone .a{font-size:13px;color:var(--ink2);margin-top:2px}
+.canzone .prog{height:2px;border-radius:2px;background:rgba(140,42,94,.12);margin-top:10px;overflow:hidden}
+.canzone .prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--rose),var(--fuchsia))}
+
+/* navigazione */
+.nav{display:flex;gap:10px;margin-top:20px}
+.nav a,.nav span{
+  flex:1;text-align:center;padding:18px 10px;border-radius:16px;text-decoration:none;
+  font-size:11px;letter-spacing:.28em;text-transform:uppercase;
+  background:rgba(255,248,251,.6);color:var(--ink2);border:1px solid rgba(232,23,127,.14);
+}
+.nav a.next{background:linear-gradient(135deg,var(--rose),var(--fuchsia));color:#fff;border:none;
+  box-shadow:0 12px 30px rgba(232,23,127,.3)}
+.nav span{opacity:.5}
+
+/* tasto musica */
+.music{
+  position:fixed;z-index:70;top:calc(14px + env(safe-area-inset-top));right:14px;
+  width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;
+  background:rgba(255,248,251,.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  box-shadow:0 8px 24px rgba(140,42,94,.18), 0 0 0 1px rgba(232,23,127,.15);
+  display:grid;place-items:center;opacity:0;pointer-events:none;transition:opacity 1s;
+}
+.music.show{opacity:1;pointer-events:auto}
+.music .bars{display:flex;gap:3px;align-items:flex-end;height:16px}
+.music .bars i{width:3px;height:100%;border-radius:2px;background:var(--fuchsia);animation:eq 1s ease-in-out infinite}
+.music .bars i:nth-child(2){animation-delay:-.3s;background:var(--g3)}
+.music .bars i:nth-child(3){animation-delay:-.6s}
+.music.paused .bars i{animation:none;height:4px}
+@keyframes eq{0%,100%{height:30%}50%{height:100%}}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .reveal,.cv-num,.cv-title,.tap{opacity:1;transform:none}
+}
+
+/* ---------- chat (stile messaggi, rosa: mai azzurro) ---------- */
+.chat{
+  margin:40px 0;padding:18px 16px 20px;border-radius:24px;
+  background:rgba(255,248,251,.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  box-shadow:0 18px 50px rgba(140,42,94,.14), 0 0 0 1px rgba(232,23,127,.08);
+}
+.chat .who{
+  text-align:center;font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--muted);
+  padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid rgba(232,23,127,.1);
+}
+.chat .who b{display:block;margin-top:6px;font-family:"Cormorant Garamond";font-style:italic;font-weight:500;
+  font-size:22px;letter-spacing:0;text-transform:none;color:var(--ink)}
+.msg{
+  max-width:80%;width:fit-content;padding:10px 15px;border-radius:20px;margin-top:6px;
+  font-size:16px;line-height:1.35;font-weight:400;
+}
+.msg.me{margin-left:auto;color:#fff;border-bottom-right-radius:6px;
+  background:linear-gradient(135deg,var(--rose),var(--fuchsia))}
+.msg.lei{color:var(--ink);background:#fff;border-bottom-left-radius:6px;box-shadow:0 2px 8px rgba(140,42,94,.08)}
+.msg.lei.verde{background:linear-gradient(135deg,var(--g1),#b6f3cc);color:var(--g4)}
+.chat .gap{height:12px}
+.chat .typing{display:flex;gap:4px;padding:14px 16px;width:fit-content;border-radius:20px;background:#fff;margin-top:6px}
+.chat .typing i{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:typ 1.2s infinite}
+.chat .typing i:nth-child(2){animation-delay:.2s}.chat .typing i:nth-child(3){animation-delay:.4s}
+@keyframes typ{0%,60%,100%{opacity:.3;transform:none}30%{opacity:1;transform:translateY(-3px)}}
+
+/* ---------- elenco "come eri vestita" ---------- */
+.lista{margin:36px 0;padding:8px 22px;border-radius:22px;list-style:none;
+  background:rgba(255,248,251,.7);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  box-shadow:0 18px 50px rgba(140,42,94,.12)}
+.lista li{display:flex;align-items:center;gap:14px;padding:15px 0;
+  font-family:"Cormorant Garamond";font-size:21px;color:var(--ink)}
+.lista li+li{border-top:1px solid rgba(232,23,127,.1)}
+.lista li .d{flex:none;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0,transparent 35%),var(--fuchsia)}
+.lista li.v .d{background:radial-gradient(circle at 35% 30%,#fff 0,transparent 35%),var(--g3)}
+.lista li small{display:block;font-family:"Jost";font-size:12px;color:var(--muted);margin-top:2px}
+
+.big{
+  font-family:"Cormorant Garamond";font-style:italic;font-weight:400;text-align:center;
+  font-size:46px;line-height:1.05;color:var(--fuchsia);margin:50px 0 44px;
+}
+.big small{display:block;font-size:20px;color:var(--ink2);margin-top:12px}
+.eco{font-family:"Cormorant Garamond";font-style:italic;font-size:24px;line-height:1.5;color:var(--ink2);
+  text-align:center;margin:34px 0}
+
+/* ---------- chat tra altri due (nomi sopra i fumetti) ---------- */
+.msg-n{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin:12px 0 2px 6px}
+.msg-n.r{text-align:right;margin-right:6px}
+.chat .note{text-align:center;font-size:12px;color:var(--muted);margin-top:16px;font-style:italic}
+
+/* ---------- "un continuo scriversi" ---------- */
+.flusso{margin:30px 0 40px;padding:0 10px;
+  -webkit-mask-image:linear-gradient(transparent,#000 25%,#000 70%,transparent);
+          mask-image:linear-gradient(transparent,#000 25%,#000 70%,transparent)}
+.flusso i{display:block;height:22px;border-radius:12px;margin-top:6px}
+.flusso i:nth-child(odd){margin-left:auto;background:linear-gradient(135deg,var(--rose),var(--fuchsia));opacity:.8}
+.flusso i:nth-child(even){background:linear-gradient(135deg,var(--g1),#b6f3cc)}
+
+/* orario 23:23: font moderno a numeri dritti */
+.cv-title.clock,.ch-head h1.clock{font-family:"Jost",sans-serif;font-weight:300;letter-spacing:-.01em}
+.cv-title.clock{font-size:clamp(76px,24vw,120px)}
+.ch-head h1.clock{font-size:76px}
+
+/* ---------- chat ricostruita: data, reazioni ---------- */
+.chat .data{text-align:center;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:4px 0 12px}
+.chat .storia{text-align:center;font-size:13px;color:var(--ink2);font-style:italic;margin:6px 0 4px}
+.chat .emo{font-size:46px;line-height:1;margin:6px 0 10px 8px}
+.msg{position:relative}
+.msg .rx{position:absolute;left:-6px;bottom:-14px;font-size:13px;line-height:1;
+  background:#fff;border-radius:999px;padding:4px 6px;box-shadow:0 2px 8px rgba(140,42,94,.18)}
+.msg.has-rx{margin-bottom:18px}
+
+/* ---------- il libro ---------- */
+.libro{margin:40px auto;display:flex;align-items:center;gap:20px;padding:22px;border-radius:22px;
+  background:rgba(255,248,251,.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  box-shadow:0 18px 50px rgba(140,42,94,.14)}
+.libro .cop{flex:none;width:86px;height:118px;border-radius:4px 10px 10px 4px;position:relative;
+  background:linear-gradient(135deg,#ffe7a3,#f7c948);box-shadow:inset 6px 0 0 rgba(0,0,0,.08),0 10px 24px rgba(140,90,0,.25);
+  display:grid;place-items:center;font-size:40px}
+.libro .cop::after{content:"🐭";position:absolute;right:8px;bottom:6px;font-size:18px}
+.libro .k{font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--muted)}
+.libro .t{font-family:"Cormorant Garamond";font-style:italic;font-size:24px;line-height:1.15;color:var(--ink);margin-top:6px}
+.libro .a{font-size:13px;color:var(--ink2);margin-top:6px}
+
+/* ---------- sottotitolo di sezione ---------- */
+.sub{display:flex;align-items:center;justify-content:center;gap:14px;margin:70px 0 30px;
+  font-size:11px;letter-spacing:.45em;text-transform:uppercase;color:var(--fuchsia);font-weight:400}
+.sub::before,.sub::after{content:"";width:40px;height:1px;background:linear-gradient(90deg,transparent,var(--fuchsia))}
+.sub::after{transform:scaleX(-1)}
+
+/* foto dentro la chat */
+.msg.img{padding:6px;background:linear-gradient(135deg,var(--g1),#b6f3cc)}
+.msg.img .ph{width:150px;aspect-ratio:4/5;border-radius:14px;overflow:hidden;
+  background:radial-gradient(60% 50% at 35% 30%,rgba(255,255,255,.9),transparent 70%),
+             radial-gradient(60% 60% at 65% 70%,rgba(255,90,165,.6),transparent 70%),
+             linear-gradient(160deg,#ffd0e2,#9fe3b9)}
+.msg.img .ph img{width:100%;height:100%;object-fit:cover;filter:blur(8px);transform:scale(1.1)}
+
+/* ---------- data in verde (capitolo VI) ---------- */
+.cv-title.verde,.ch-head h1.verde{
+  background:linear-gradient(120deg,var(--g4),var(--g3) 40%,var(--g2) 70%,var(--g3));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.cv-title .anno,.ch-head h1 .anno{display:block;font-family:"Jost";font-style:normal;font-weight:300;
+  font-size:.32em;letter-spacing:.5em;margin-top:14px;padding-left:.5em}
+
+/* ---------- famiglia ---------- */
+.fam{margin:30px 0 40px;display:grid;gap:12px}
+.fam .p{padding:20px 22px;border-radius:20px;
+  background:rgba(255,248,251,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  box-shadow:0 14px 40px rgba(140,42,94,.12)}
+.fam .chi{font-size:10px;letter-spacing:.38em;text-transform:uppercase;color:var(--fuchsia)}
+.fam .cosa{font-family:"Cormorant Garamond";font-style:italic;font-size:23px;line-height:1.3;color:var(--ink);margin-top:8px}
+.fam .nota{font-size:13px;color:var(--muted);margin-top:6px}
+
+/* ---------- il voto ---------- */
+.voto{margin:36px 0 44px;padding:34px 20px 30px;border-radius:26px;text-align:center;
+  background:rgba(255,248,251,.8);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  box-shadow:0 20px 56px rgba(140,42,94,.16)}
+.voto .n{font-family:"Jost";font-weight:300;font-size:96px;line-height:1;letter-spacing:-.02em;
+  background:linear-gradient(120deg,var(--rose),var(--fuchsia));-webkit-background-clip:text;background-clip:text;color:transparent;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.voto .n.pop{transform:scale(1.18)}
+.voto .n small{font-size:.32em;color:var(--ink2);-webkit-text-fill-color:var(--ink2);margin-left:6px}
+.voto .bar{height:6px;border-radius:6px;background:rgba(140,42,94,.1);margin:22px 10px 0;overflow:hidden}
+.voto .bar i{display:block;height:100%;width:60%;border-radius:6px;
+  background:linear-gradient(90deg,var(--rose),var(--fuchsia) 70%,var(--g3));transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.voto .lab{margin-top:16px;font-family:"Cormorant Garamond";font-style:italic;font-size:20px;color:var(--ink2);min-height:1.4em}
+.voto .dieci{margin-top:22px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--g4);opacity:0;transition:opacity 1.2s}
+.voto.done .dieci{opacity:1}
+
+/* ---------- le note (cap. X) ---------- */
+.note-app{margin:36px 0 40px;border-radius:22px;overflow:hidden;
+  background:#fffaf3;box-shadow:0 20px 56px rgba(140,42,94,.16), 0 0 0 1px rgba(140,90,0,.08)}
+.note-app .bar{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;
+  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;font-size:15px;color:#d1940c;font-weight:500}
+.note-app .body{padding:2px 22px 24px;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;color:#2b2b2b}
+.note-app h4{font-size:22px;font-weight:700;margin-bottom:4px}
+.note-app .d{font-size:12px;color:#a0a0a0;margin-bottom:14px}
+.note-app li{font-size:15.5px;line-height:1.5;margin:0 0 6px 18px}
+.note-app li.blur{filter:blur(4px);user-select:none}
+
+/* ---------- foto piccole (polaroid) ---------- */
+.pola{width:64%;margin:34px auto 38px;padding:10px 10px 0;background:#fffdfb;border-radius:6px;
+  box-shadow:0 18px 40px rgba(140,42,94,.22), 0 2px 6px rgba(140,42,94,.12);transform:rotate(var(--r,-2.5deg))}
+.pola.dx{--r:2.5deg}
+.pola .ph{aspect-ratio:1/1;overflow:hidden;border-radius:2px;
+  background:radial-gradient(60% 50% at 35% 30%,rgba(255,255,255,.9),transparent 70%),linear-gradient(160deg,#ffd0e2,#ff9fc6)}
+.pola img{width:100%;height:100%;object-fit:cover;display:block;filter:blur(1.5px) saturate(1.05)}
+.pola figcaption{font-family:"Pinyon Script",cursive;font-size:24px;color:var(--ink2);text-align:center;padding:8px 0 10px}
+.reveal.pola{transform:translateY(24px) rotate(var(--r,-2.5deg))}
+.reveal.pola.in{transform:rotate(var(--r,-2.5deg))}

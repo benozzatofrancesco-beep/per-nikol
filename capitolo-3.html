@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffd3e4">
+<title>III · 23:23</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Pinyon+Script&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="capitolo.css?v=8">
+</head>
+<body class="locked">
+
+<div class="bg"></div>
+<div class="bg-photo" data-src="foto/c3-sfondo.jpg"></div>
+<div class="bg-tint"></div>
+<canvas id="petals"></canvas>
+
+<!-- canzone del capitolo -->
+<audio id="song" src="musica/capitolo-3.mp3?v=5" loop preload="auto" playsinline></audio>
+<button class="music" id="music" aria-label="Musica"><span class="bars"><i></i><i></i><i></i></span></button>
+
+<!-- ============ SCHERMATA TITOLO ============ -->
+<div class="cover" id="cover">
+  <div class="cv-num">capitolo III</div>
+  <div class="cv-title clock">23<span class="colon">:</span>23</div>
+  <button class="tap" id="tap" aria-label="Tocca qui per iniziare">
+    <span class="circle"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
+    <span class="label">tocca qui per iniziare</span>
+  </button>
+</div>
+
+<!-- ============ CAPITOLO ============ -->
+<main>
+  <header class="ch-head reveal">
+    <div class="n">capitolo III</div>
+    <h1 class="clock">23:23</h1>
+    <div class="orn"></div>
+  </header>
+
+  <p class="txt reveal">La nostra prima uscita. Per dire così, per dire così. Non so nemmeno se tu la chiameresti così.</p>
+
+  <p class="txt reveal">Ma per me lì è iniziato tutto. È iniziato il tutto. Anche se tu, in realtà, c'eri già da prima: c'eri da quel ciao alle biciclette.</p>
+
+  <figure class="foto reveal">
+    <img src="foto/c3-1.jpg" alt="">
+    <figcaption>So che questa foto è di Praga. Però ha un bel significato: mi ricorda un'altra foto, quella della nostra prima uscita.</figcaption>
+  </figure>
+
+  <p class="txt reveal">Mi ricordo che ogni tuo messaggio, già da lì, ha avuto un po' la sua storia. Ogni tuo messaggio aveva una sua regola di vita. Li leggevo, e li rileggevo. Cercavo di capire cosa volevi dirmi, anche quando forse non volevi dirmi niente.</p>
+
+  <div class="big reveal">E io aspettavo<br>sempre te.</div>
+
+  <p class="txt reveal">Ti scrivevo ogni giorno. Ogni giorno. E a un certo punto ti avevo raccontato questa cosa delle 23:23. Una cosa piccola, mia.</p>
+
+  <p class="txt reveal">Poi una sera, la notte prima degli esami, me l'hai scritta tu. Per la prima volta. Proprio quella sera, quando avresti dovuto pensare a tutto tranne che a me.</p>
+
+  <div class="chat reveal">
+    <div class="who">chat<b class="nikol">Nikol</b></div>
+    <div class="msg lei verde" style="font-family:Jost;font-variant-numeric:tabular-nums;font-size:22px;letter-spacing:.04em">23:23</div>
+    <div class="note">notte prima degli esami · 23:23</div>
+  </div>
+
+  <p class="txt reveal">Felicissimo. Ho detto: ok, forse c'è una speranza. Forse non è tutto nella mia testa.</p>
+
+  <div class="big reveal">Ero completamente<br>perso.</div>
+
+  <p class="txt reveal">Però da lì è iniziata anche un po' la ricaduta. Nessuna uscita è più stata così. Nessuna come quella prima.</p>
+
+  <div class="big reveal">Tranne una.</div>
+
+  <div class="sub reveal">monte berico</div>
+
+  <p class="txt reveal">L'uscita a Monte Berico. Quella non me la scorderò mai.</p>
+
+  <p class="txt reveal">Le scalette. Il video. Tutto. Me la ricordo passo per passo, scalino per scalino.</p>
+
+  <figure class="pola reveal"><div class="ph"><img src="foto/c3-p.jpg" alt=""></div><figcaption>le scalette</figcaption></figure>
+
+  <p class="txt reveal">Anche se, praticamente, è stata l'ultima uscita. Ma bella. Bellissima.</p>
+
+  <div class="quote reveal">Non me la scorderò mai.</div>
+
+  <p class="txt reveal">Per il resto, ci vedevamo, ci scrivevamo, ma qualcosa non tornava più uguale.</p>
+
+  <p class="txt reveal">Io ero molto preso. Tu, magari, in realtà non volevi niente di più. E forse, in fondo, lo sapevo anche. Ma io continuavo a sperarci. A sperarci, e a sperarci ancora.</p>
+
+  <p class="txt reveal">Arrivati a settembre, mi ricordo, ero gelosissimo. Geloso di questo Francesco…</p>
+
+  <div class="big reveal">che non ero io.</div>
+
+  <p class="txt reveal">Finché non è arrivato quel fatidico settembre, poco prima del mio compleanno.</p>
+
+  <p class="txt reveal">Quella sera ho provato a dirti che mi piacevi. Ci ho provato davvero, avevo le parole lì, pronte. Ma non ce l'ho fatta. Non mi sono uscite.</p>
+
+  <p class="txt reveal">Però forse avevi capito.</p>
+
+  <div class="quote reveal">E ci siamo allontanati. Per sempre.<br><small style="font-size:.7em;color:var(--ink2)">o almeno, così pensavo</small></div>
+
+  <!-- canzone -->
+  <section class="canzone paused reveal">
+    <button class="pp" aria-label="Play / pausa">
+      <svg class="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg>
+      <svg class="i-pause" viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+    </button>
+    <div style="flex:1;min-width:0">
+      <div class="k">la canzone di questo capitolo</div>
+      <div class="t">Upside Down</div>
+      <div class="a">Jack Johnson</div>
+      <div class="prog"><i></i></div>
+    </div>
+  </section>
+
+  <nav class="nav reveal">
+    <a href="capitolo-2.html">← II</a>
+    <a href="index.html#capitoli">indice</a>
+    <a class="next" href="capitolo-4.html">IV →</a>
+  </nav>
+</main>
+
+<script src="capitolo.js?v=8"></script>
+</body>
+</html>
