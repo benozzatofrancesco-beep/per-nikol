@@ -116,3 +116,27 @@
     }, 600 + i*1500));
   },{threshold:.6}).observe(v);
 })();
+
+/* --- le note: piccole e chiuse, si aprono col tocco --- */
+(function(){
+  document.querySelectorAll(".note-app").forEach(n=>{
+    const body = n.querySelector(".body"); if(!body) return;
+    n.classList.add("chiusa");
+    const b = document.createElement("button");
+    b.className = "apri"; b.textContent = "tocca per aprire la nota";
+    n.appendChild(b);
+    n.addEventListener("click", e=>{
+      if(n.classList.contains("chiusa")){
+        body.style.maxHeight = "118px";
+        n.classList.remove("chiusa");
+        requestAnimationFrame(()=> body.style.maxHeight = body.scrollHeight + "px");
+        b.textContent = "chiudi la nota";
+      } else if(e.target === b){
+        body.style.maxHeight = body.scrollHeight + "px";
+        requestAnimationFrame(()=>{ n.classList.add("chiusa"); body.style.maxHeight = ""; });
+        b.textContent = "tocca per aprire la nota";
+        n.scrollIntoView({block:"center"});
+      }
+    });
+  });
+})();
