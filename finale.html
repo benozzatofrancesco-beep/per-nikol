@@ -336,39 +336,32 @@ const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto
     box.appendChild(b);
   }
 
-  /* --- invio alla mail --- */
-  // il modulo vive fuori dalle pagine finché non serve
-  const form = document.createElement("div");
+  /* --- invio alla mail: form classico FormSubmit (action + method POST) --- */
+  const base = location.href.split("#")[0].split("?")[0];
+  const form = document.createElement("form");
   form.className = "form reveal"; form.id = "form";
+  form.action = "https://formsubmit.co/" + EMAIL; form.method = "POST";
   form.innerHTML = `<div class="k">se vuoi</div><h3>Scrivimi altro</h3>
-    <textarea id="msg" placeholder="Qui puoi scrivere quello che vuoi. Arriva solo a me."></textarea>
-    <button class="go" id="invia">invia</button><div class="stato" id="stato"></div>`;
-  document.querySelectorAll("[data-scelta]").forEach(b=> b.addEventListener("click", ()=>{
-    scelta = b.dataset.scelta;
-    try{ localStorage.setItem("pn-risposta", scelta); }catch(_){}
-    document.querySelector("#v-"+scelta+" .slot-form").appendChild(form);
-    form.classList.remove("in");
-    show("v-"+scelta);
-  }));
-  form.addEventListener("click", async e=>{
-    if(e.target.id !== "invia") return;
-    const btn = e.target, stato = form.querySelector("#stato"), msg = form.querySelector("#msg").value.trim();
-    const risposta = scelta === "si" ? "Continua il tuo percorso. Potremo rincontrarci in futuro." : "No, Francesco. Per me basta, per sempre.";
-    const testo = `Risposta: ${risposta}\nVoto: ${voto || "nessuno"}/10\n\nMessaggio:\n${msg || "(nessun messaggio)"}`;
-    btn.disabled = true; stato.textContent = "invio in corso…";
-    try{
-      const r = await fetch("https://formsubmit.co/ajax/" + EMAIL, {
-        method:"POST", headers:{"Content-Type":"application/json","Accept":"application/json"},
-        body: JSON.stringify({_subject:"Risposta di Nikol", _template:"box", _captcha:"false", risposta, voto: (voto||"nessuno")+"/10", messaggio: msg || "(nessun messaggio)"})
-      });
-      const j = await r.json().catch(()=>({}));
-      if(!r.ok || String(j.success) !== "true") throw 0;
-      show("v-fine"); burst(document.querySelector("#v-fine h1"), true);
-    }catch(_){
-      btn.disabled = false;
-      stato.innerHTML = `Non è partito. <a href="mailto:${EMAIL}?subject=${encodeURIComponent("Risposta di Nikol")}&body=${encodeURIComponent(testo)}">Invialo da qui</a>`;
-    }
+    <textarea name="messaggio" id="msg" placeholder="Qui puoi scrivere quello che vuoi. Arriva solo a me."></textarea>
+    <input type="hidden" name="risposta" id="f-risposta">
+    <input type="hidden" name="voto" id="f-voto">
+    <input type="hidden" name="_subject" value="Risposta di Nikol">
+    <input type="hidden" name="_template" value="box">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" value="${base}?inviato=1">
+    <button type="submit" class="go" id="invia">invia</button><div class="stato" id="stato"></div>`;
+  form.addEventListener("submit", ()=>{
+    form.querySelector("#f-risposta").value = scelta === "si" ? "Continua il tuo percorso. Potremo rincontrarci in futuro." : "No, Francesco. Per me basta, per sempre.";
+    form.querySelector("#f-voto").value = (voto || "nessuno") + "/10";
+    if(!form.querySelector("#msg").value.trim()) form.querySelector("#msg").value = "(nessun messaggio)";
+    form.querySelector("#invia").textContent = "invio in corso…";
   });
+
+  /* tornata da FormSubmit dopo l'invio: mostra il grazie */
+  if(new URLSearchParams(location.search).has("inviato")){
+    $("#cover").classList.add("gone"); document.body.classList.remove("locked");
+    show("v-fine");
+  }
 
   /* --- petali --- */
   const cv = $("#petals"), cx = cv.getContext("2d");
