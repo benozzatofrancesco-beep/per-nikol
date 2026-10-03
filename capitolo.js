@@ -192,3 +192,11 @@
     });
   });
 })();
+
+/* --- barra di lettura in alto --- */
+(function(){
+  const b = document.createElement("div"); b.className = "lettura"; document.body.appendChild(b);
+  const upd = ()=>{ const h = document.documentElement.scrollHeight - innerHeight;
+    b.style.width = (h > 0 ? Math.min(100, scrollY / h * 100) : 0) + "%"; };
+  addEventListener("scroll", upd, {passive:true}); addEventListener("resize", upd); upd();
+})();

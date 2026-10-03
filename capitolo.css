@@ -396,3 +396,25 @@ main{
 .nav a.next.carica::after{width:100%;transition:width 4s linear}
 .auto-next{text-align:center;margin-top:12px;font-size:12px;letter-spacing:.12em;color:var(--muted);opacity:0;transition:opacity .6s}
 .auto-next.on{opacity:1}
+
+/* ================= MIGLIORAMENTO FINALE ================= */
+/* copertina col l'immagine del capitolo (continua la transizione Kling) */
+.cover.con-img::before{content:"";position:absolute;inset:-30px;background:var(--img) center/cover;opacity:1;filter:blur(3px) saturate(1.05);
+  animation:respira 14s ease-in-out infinite alternate}
+.cover.con-img::after{content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 42% at 50% 47%,rgba(255,240,246,.78),rgba(255,226,238,.38) 62%,rgba(150,40,95,.18))}
+.cover.con-img > *{position:relative;z-index:1}
+@keyframes respira{from{transform:scale(1.04)}to{transform:scale(1.12)}}
+
+/* capolettera */
+.ch-head + .txt::first-letter{float:left;font-size:3.6em;line-height:.8;padding:7px 9px 0 0;
+  font-style:italic;color:var(--fuchsia)}
+
+/* barra di lettura */
+.lettura{position:fixed;left:0;top:0;height:3px;width:0;z-index:80;
+  background:linear-gradient(90deg,var(--rose),var(--fuchsia),var(--g3));box-shadow:0 0 8px rgba(232,23,127,.4);
+  transition:width .15s linear}
+.cover.con-img .cv-num,.cover.con-img .tap .label{text-shadow:0 0 10px rgba(255,240,246,.95),0 0 22px rgba(255,240,246,.8)}
+.cover.con-img .tap .label{color:var(--ink);padding:4px 14px;border-radius:999px;background:rgba(255,240,246,.55);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.cover.con-img .cv-title{text-shadow:0 2px 24px rgba(255,240,246,.9)}
