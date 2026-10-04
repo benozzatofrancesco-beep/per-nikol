@@ -438,3 +438,12 @@ main{
 .screen figcaption{margin-top:16px;text-align:center;font-family:"Cormorant Garamond";font-style:italic;font-size:19px;line-height:1.45;color:var(--ink2)}
 .reveal.screen{transform:translateY(24px) rotate(var(--r,-1.2deg))}
 .reveal.screen.in{transform:rotate(var(--r,-1.2deg))}
+
+/* ---------- sempre un modo per tornare all'indice ---------- */
+.indice-fab{position:fixed;z-index:70;top:calc(14px + env(safe-area-inset-top));left:14px;
+  height:46px;padding:0 16px;border-radius:23px;display:flex;align-items:center;gap:8px;text-decoration:none;
+  background:rgba(255,248,251,.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  box-shadow:0 8px 24px rgba(140,42,94,.18), 0 0 0 1px rgba(232,23,127,.15);
+  font-family:"Jost";font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--fuchsia);transition:opacity 1s}
+.indice-fab svg{width:15px;height:15px;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;fill:none}
+body.locked .indice-fab{opacity:0;pointer-events:none}

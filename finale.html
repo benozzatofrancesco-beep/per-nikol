@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Pinyon+Script&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="capitolo.css?v=20">
+<link rel="stylesheet" href="capitolo.css?v=21">
 <style>
   /* ---------- pagine interne ---------- */
   .view{display:none}
@@ -145,6 +145,19 @@
   .bg-row{display:flex;justify-content:space-between;gap:10px;font-size:14px;font-weight:500}
   .bg-row small{display:block;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:400}
   #v-fine .ch-head + .txt::first-letter{float:none;font-size:inherit;line-height:inherit;padding:0;color:inherit;font-style:inherit}
+  /* ---------- fine dei titoli di coda ---------- */
+  .coda-fine{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+    padding:0 30px;text-align:center;opacity:0;pointer-events:none;transition:opacity 2s ease}
+  .coda-fine.on{opacity:1;pointer-events:auto}
+  .cf-diario{margin-bottom:26px}
+  .cf-diario[hidden]{display:none}
+  .cf-k{font-family:"Jost";font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:var(--rose)}
+  .cf-t{margin:10px 0 24px;font-family:"Cormorant Garamond";font-style:italic;font-size:38px;line-height:1.15;color:#fff}
+  .cf-btn{display:inline-block;padding:17px 28px;border-radius:30px;text-decoration:none;
+    font-family:"Jost";font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:#fff;
+    background:linear-gradient(135deg,#ff5aa5,#e8177f);box-shadow:0 14px 34px rgba(232,23,127,.35)}
+  .cf-link{border:1px solid rgba(255,227,238,.35);background:none;border-radius:26px;padding:12px 24px;cursor:pointer;text-decoration:none;
+    font-family:"Jost";font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:#ffe3ee}
   /* ---------- scrivimi ---------- */
   .form{margin-top:44px}
   .form-box{padding:24px 20px;border-radius:24px;background:rgba(255,248,251,.85);
@@ -172,6 +185,7 @@
 <div class="bg-photo" data-src="foto/c11-sfondo.jpg"></div>
 <div class="bg-tint"></div>
 <canvas id="petals"></canvas>
+<a class="indice-fab" href="index.html#capitoli" aria-label="Indice"><svg viewBox="0 0 24 24"><path d="M5 7h14M5 12h14M5 17h9"/></svg>indice</a>
 
 <audio id="song" src="musica/finale.mp3?v=6" loop preload="auto" playsinline></audio>
 <audio id="song2" src="musica/telephones.mp3?v=6" loop preload="auto" playsinline></audio>
@@ -417,6 +431,15 @@
         <div class="cv-fine">Ti voglio bene.<br><span>Francesco</span></div>
       </div>
     </div>
+    <div class="coda-fine" id="coda-fine">
+      <div class="cf-diario" id="cf-diario" hidden>
+        <div class="cf-k">e adesso</div>
+        <div class="cf-t">c'è il nostro diario</div>
+        <a class="cf-btn" href="diario.html">apri il nostro diario →</a>
+      </div>
+      <a class="cf-link" href="index.html#capitoli">indice</a>
+      <button class="cf-link" type="button" id="cf-rivedi">rivedi i titoli di coda</button>
+    </div>
     <button class="back coda-esci" data-go="v-lettera">↺ torna alla lettera</button>
   </section>
 
@@ -504,11 +527,18 @@ const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto
   function show(id){
     if(id === "v-domanda") toAlleria();
     if(id === "v-coda") toPerTe();
-    if(id === "v-coda"){ const roll = $("#roll"); roll.style.animation = "none"; void roll.offsetWidth; roll.style.animation = ""; }
+    if(id === "v-coda"){
+      const roll = $("#roll"); roll.style.animation = "none"; void roll.offsetWidth; roll.style.animation = "";
+      $("#coda-fine").classList.remove("on");
+      let inv = ""; try{ inv = localStorage.getItem("pn-inviata") || ""; }catch(_){}
+      $("#cf-diario").hidden = inv !== "si";
+    }
     document.querySelectorAll(".view").forEach(v=> v.classList.toggle("on", v.id === id));
     scrollTo({top:0, behavior:"instant"});
     cascade($("#"+id), 150);
   }
+  $("#roll").addEventListener("animationend", ()=> $("#coda-fine").classList.add("on"));
+  $("#cf-rivedi").addEventListener("click", ()=> show("v-coda"));
   document.querySelectorAll("[data-go]").forEach(b=> b.addEventListener("click", ()=> show(b.dataset.go)));
 
   /* --- le stelle --- */

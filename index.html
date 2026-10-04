@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta name="pn-build" content="20261004a">
+<meta name="pn-build" content="20261004b">
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0d0d0f">
@@ -536,7 +536,7 @@
   try{
     const mia = document.querySelector('meta[name="pn-build"]').content;
     const t = await (await fetch("index.html?nc=" + Date.now(), {cache:"no-store"})).text();
-    const m = t.match(/name="pn-build" content="([^"]+)"/);
+    const m = t.match(/name="pn-build" content="20261004b"]+)"/);
     if(m && m[1] !== mia && sessionStorage.getItem("pn-ricaricato") !== m[1]){
       sessionStorage.setItem("pn-ricaricato", m[1]);
       location.replace(location.pathname + "?v=" + m[1] + location.hash);
