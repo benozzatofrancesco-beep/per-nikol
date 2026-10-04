@@ -2,6 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
+<meta name="pn-build" content="20261004a">
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0d0d0f">
@@ -415,6 +416,7 @@
       </button>
       <p class="tfa-foot">Scegli l'account per continuare</p>
       <div class="vol"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path class="w" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/></svg>Per continuare, alza il volume</div>
+      <div class="vol" style="margin-top:12px"><svg viewBox="0 0 24 24"><path style="fill:none;stroke:#f2f2f4;stroke-width:1.8;stroke-linecap:round" d="M19 12a7 7 0 1 1-2.05-4.95"/><path style="fill:none;stroke:#3ecf7a;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round" d="M19 4.5v4h-4"/></svg>Prima, ricarica la pagina per vedere l'ultima versione</div>
     </div>
 
     <!-- fattore 1: password -->
@@ -529,6 +531,18 @@
 
 <script>
 /* ---------- capitoli (titoli provvisori) ---------- */
+/* se il telefono ha in memoria una versione vecchia del sito, ricarica quella nuova (una volta sola) */
+(async function(){
+  try{
+    const mia = document.querySelector('meta[name="pn-build"]').content;
+    const t = await (await fetch("index.html?nc=" + Date.now(), {cache:"no-store"})).text();
+    const m = t.match(/name="pn-build" content="([^"]+)"/);
+    if(m && m[1] !== mia && sessionStorage.getItem("pn-ricaricato") !== m[1]){
+      sessionStorage.setItem("pn-ricaricato", m[1]);
+      location.replace(location.pathname + "?v=" + m[1] + location.hash);
+    }
+  }catch(_){}
+})();
 const chapters = [
   {t:"Il primo giorno",               open:true,  href:"capitolo-1.html"},
   {t:"La quasi arresa",               open:true,  href:"capitolo-2.html"},
