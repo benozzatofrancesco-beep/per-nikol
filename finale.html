@@ -171,6 +171,10 @@
     border:1px solid rgba(232,23,127,.2);background:#fff;font-family:"Jost";font-size:16px;line-height:1.5;color:var(--ink);outline:none}
   .form textarea:focus{border-color:var(--fuchsia)}
   .form .go{margin-top:16px}
+  .form-diario{margin:18px 0 4px;padding:16px 16px 6px;border-radius:16px;background:linear-gradient(135deg,#eafbf0,#f4fff7);border:1px solid rgba(23,168,92,.25)}
+  .form-diario[hidden]{display:none}
+  .form-diario .fd-k{font-family:"Jost";font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--g3);margin-bottom:6px}
+  .form-diario p{font-family:"Cormorant Garamond";font-size:17.5px;line-height:1.45;color:var(--ink2);margin-bottom:10px}
   .form .stato{text-align:center;margin-top:12px;font-size:13px;color:var(--muted);min-height:1.2em}
   .form .stato a{color:var(--fuchsia)}
 </style>
@@ -370,10 +374,6 @@
     <div class="sub reveal">il tempo</div>
     <p class="txt reveal">Aspetterò un tuo messaggio. Posso aspettare anche che finisca la tua esperienza. Tutto il tempo che ti serve per pensarci.</p>
     <p class="txt reveal">E se un giorno cambi idea, va bene. Riapri questo sito: in fondo all'indice c'è <em>“cambia la tua risposta”</em>. Lì puoi scegliere “No, basta per sempre”, quando vuoi.</p>
-    <div class="sub reveal">il nostro diario</div>
-    <p class="txt reveal">E un'ultima cosa. Appena invierai la tua risposta, si sbloccherà un capitolo nuovo: <em>il nostro diario</em>. Lo trovi nell'indice, dopo la lettera finale.</p>
-    <p class="txt reveal">Spero di poterlo riempire insieme a te. E che diventi il nostro posto, quello dove scriviamo i nostri ricordi.</p>
-    <p class="txt reveal">E con quello che verrà fuori da questo diario, vorrei farci tante altre cose.</p>
     <div class="firma reveal">Francesco</div>
     <div class="slot-form"></div>
     <button class="go coda-btn" data-go="v-coda">▶ titoli di coda</button>
@@ -605,6 +605,11 @@ function salvaRisposta(valore, tentativo){
     <div class="form-box invio">
     <div class="k">la tua risposta</div><h3>Invia la tua risposta</h3>
     <p class="form-p">Basta premere qui: la tua risposta mi arriva anche senza scrivere niente.</p>
+    <div class="form-diario" id="form-diario" hidden>
+      <div class="fd-k">il nostro diario</div>
+      <p>Appena la invii, si sbloccherà il nostro diario. Lo trovi nell'indice, dopo la lettera finale.</p>
+      <p>Spero di poterlo riempire insieme a te, e che diventi il nostro posto: quello dove scriviamo i nostri ricordi.</p>
+    </div>
     <input type="hidden" name="risposta" id="f-risposta">
     <input type="hidden" name="voto" id="f-voto">
     <input type="hidden" name="_subject" value="Risposta di Nikol">
@@ -654,6 +659,7 @@ function salvaRisposta(valore, tentativo){
     scelta = b.dataset.scelta;
     try{ localStorage.setItem("pn-risposta", scelta); }catch(_){}
     document.querySelector("#v-"+scelta+" .slot-form").appendChild(form);
+    form.querySelector("#form-diario").hidden = scelta !== "si";
     form.classList.remove("in");
     show("v-"+scelta);
   }));
