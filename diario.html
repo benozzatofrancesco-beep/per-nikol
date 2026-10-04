@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta name="pn-build" content="d1">
+<meta name="pn-build" content="d2">
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#ffd3e4">
@@ -72,6 +72,9 @@
 <div class="bg"></div>
 <div class="bg-tint"></div>
 <canvas id="petals"></canvas>
+<!-- sottofondo del diario -->
+<audio id="song" src="musica/someone-like-you.mp3?v=1" loop preload="auto" playsinline></audio>
+<button class="music" id="music" aria-label="Musica"><span class="bars"><i></i><i></i><i></i></span></button>
 <a class="indice-fab" href="index.html#capitoli" aria-label="Indice"><svg viewBox="0 0 24 24"><path d="M5 7h14M5 12h14M5 17h9"/></svg>indice</a>
 
 <main>
@@ -279,6 +282,34 @@ $("#scrivi").addEventListener("submit", async e=>{
   }
   btn.disabled = false; btn.textContent = "scrivi nel diario";
 });
+
+/* --- musica: Someone Like You, parte al primo tocco (su iPhone serve un tocco) --- */
+(function(){
+  const song = $("#song"), btn = $("#music");
+  let voluta = true;
+  function fade(to, ms){
+    clearInterval(song._f); const from = song.volume, t0 = Date.now();
+    song._f = setInterval(()=>{ const k = Math.min(1,(Date.now()-t0)/ms); try{ song.volume = from + (to-from)*k; }catch(_){}
+      if(k>=1) clearInterval(song._f); }, 40);
+  }
+  function parti(){
+    if(!voluta || !song.paused) return;
+    song.volume = 0;
+    song.play().then(()=>{ fade(.85, 2500); btn.classList.add("show"); btn.classList.remove("paused"); }).catch(()=>{});
+  }
+  parti();   // dove il browser lo permette, parte subito
+  ["pointerdown","touchstart","keydown"].forEach(ev=> document.addEventListener(ev, parti, {passive:true}));
+  btn.addEventListener("click", e=>{
+    e.stopPropagation();
+    if(song.paused){ voluta = true; song.play(); fade(.85, 800); btn.classList.remove("paused"); }
+    else { voluta = false; song.pause(); btn.classList.add("paused"); }
+  });
+  // uscendo dal diario la musica sfuma
+  document.addEventListener("click", e=>{
+    const a = e.target.closest("a[href]"); if(!a || song.paused) return;
+    e.preventDefault(); fade(0, 600); setTimeout(()=> location.href = a.href, 650);
+  });
+})();
 
 /* --- petali --- */
 (function(){
