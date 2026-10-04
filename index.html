@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta name="pn-build" content="20261004i">
+<meta name="pn-build" content="20261004j">
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0d0d0f">
@@ -392,6 +392,7 @@
 <div class="glow"></div>
 <div class="grain"></div>
 <canvas id="petals"></canvas>
+<audio id="authsong" src="musica/radiance.mp3?v=1" loop preload="auto" playsinline></audio>
 <audio id="song" src="musica/alleria.mp3?v=6" loop preload="auto" playsinline></audio>
 <div class="introvid"><video id="introvid" src="transizioni/intro.mp4?v=1" muted playsinline webkit-playsinline preload="auto"></video></div>
 <button class="music" id="music" aria-label="Musica"><span class="bars"><i></i><i></i><i></i></span></button>
@@ -575,6 +576,22 @@ chapters.forEach((c,i)=>{
 /* ---------- autenticazione ---------- */
 const $ = id => document.getElementById(id);
 const intro = $("intro");
+/* musica dell'autenticazione (Radiance): parte al primo tocco, sfuma quando si entra */
+const authSong = $("authsong");
+let entrata = false;
+function startAuth(){
+  if(entrata || !authSong.paused) return;
+  authSong.volume = .85;
+  authSong.play().catch(()=>{});
+}
+authSong.play().catch(()=>{});   // dove il browser lo permette, parte subito
+["pointerdown","keydown","touchstart"].forEach(ev=> document.addEventListener(ev, startAuth, {passive:true}));
+function stopAuth(){
+  entrata = true;
+  const from = authSong.volume, t0 = Date.now();
+  const iv = setInterval(()=>{ const k = Math.min(1,(Date.now()-t0)/900); try{ authSong.volume = from*(1-k); }catch(_){}
+    if(k>=1){ clearInterval(iv); authSong.pause(); } }, 40);
+}
 $("orb").addEventListener("click", ()=>{
   $("s1").classList.add("hide"); $("spw").classList.remove("hide");
   setTimeout(()=> $("pw").focus(), 350);
@@ -597,6 +614,7 @@ $("no").addEventListener("click", ()=>{
   $("s2").classList.remove("shake"); void $("s2").offsetWidth; $("s2").classList.add("shake");
 });
 $("yes").addEventListener("click", ()=>{
+  stopAuth();
   startSong();
   $("d2").className = "dot ok";
   $("s2").classList.add("hide"); $("s3").classList.remove("hide");
