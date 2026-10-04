@@ -130,6 +130,20 @@
   .cv-moon{width:110px;height:110px;margin:0 auto 34px;border-radius:50%;
     background:radial-gradient(circle at 38% 34%,#fffdf6 0%,#fff3e0 38%,#f7d9b8 70%,#e9bf98 100%);
     box-shadow:0 0 50px 14px rgba(255,236,214,.55),0 0 140px 40px rgba(255,150,200,.35)}
+  .form-p{margin-top:8px;font-family:"Cormorant Garamond";font-size:17.5px;line-height:1.45;color:var(--ink2)}
+  .form-lab{margin-top:18px;font-family:"Jost";font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--fuchsia)}
+  .form-lab span{color:var(--muted);letter-spacing:.1em;text-transform:none}
+  .form-lab + textarea{margin-top:8px}
+  /* biglietti per il Brasile */
+  .biglietti{position:relative;height:345px;margin:22px auto 6px;max-width:360px}
+  .bg-t{position:absolute;left:4%;right:10%;top:0;padding:16px 18px 14px;border-radius:16px;transform:rotate(-4deg);
+    background:linear-gradient(135deg,#fffdfb,#ffeef5);box-shadow:0 18px 40px rgba(140,42,94,.22);border-left:8px solid var(--fuchsia);font-family:"Jost";color:var(--ink)}
+  .bg-t.secondo{top:172px;left:10%;right:4%;transform:rotate(3deg);border-left-color:var(--g3)}
+  .bg-top{display:flex;justify-content:space-between;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+  .bg-rotta{display:flex;align-items:center;justify-content:space-between;margin:8px 0 10px;font-size:34px;font-weight:500;letter-spacing:.04em}
+  .bg-rotta i{font-style:normal;font-size:20px;color:var(--fuchsia);flex:1;text-align:center;border-bottom:1px dashed rgba(140,42,94,.3);margin:0 12px;line-height:1.6}
+  .bg-row{display:flex;justify-content:space-between;gap:10px;font-size:14px;font-weight:500}
+  .bg-row small{display:block;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:400}
   /* ---------- scrivimi ---------- */
   .form{margin-top:44px;padding:24px 20px;border-radius:24px;background:rgba(255,248,251,.85);
     backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 18px 50px rgba(140,42,94,.15)}
@@ -294,6 +308,21 @@
       <div class="nv-tc">00:00:00:00</div>
     </div>
     <p class="nv-testo reveal">Qui dentro costruirò il nostro video.<br><b>Promesso.</b><br>Spero non sia troppo tardi…</p>
+    <div class="sub reveal">un'altra piccola promessa</div>
+    <p class="txt reveal">E se va tutto bene… perché no: fare questo viaggio insieme.</p>
+    <div class="biglietti reveal">
+      <div class="bg-t">
+        <div class="bg-top"><span>Carta d'imbarco</span><span>✈︎</span></div>
+        <div class="bg-rotta"><b>ITA</b><i>✈︎</i><b>BRA</b></div>
+        <div class="bg-row"><div><small>passeggero</small>Nikol</div><div><small>quando</small>maggio</div><div><small>posto</small>finestrino</div></div>
+      </div>
+      <div class="bg-t secondo">
+        <div class="bg-top"><span>Carta d'imbarco</span><span>✈︎</span></div>
+        <div class="bg-rotta"><b>ITA</b><i>✈︎</i><b>BRA</b></div>
+        <div class="bg-row"><div><small>passeggero</small>Francesco</div><div><small>quando</small>maggio</div><div><small>posto</small>accanto a te</div></div>
+      </div>
+    </div>
+    <p class="nv-testo reveal">Brasile. Due biglietti.<br>A maggio li comprerei io,<br><b>se tutto va bene.</b></p>
     <div class="sub reveal">il tempo</div>
     <p class="txt reveal">Aspetterò un tuo messaggio. Posso aspettare anche che finisca la tua esperienza. Tutto il tempo che ti serve per pensarci.</p>
     <p class="txt reveal">E se un giorno cambi idea, va bene. Riapri questo sito: in fondo all'indice c'è <em>“cambia la tua risposta”</em>. Lì puoi scegliere “No, basta per sempre”, quando vuoi.</p>
@@ -495,7 +524,9 @@ const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto
   const form = document.createElement("form");
   form.className = "form reveal"; form.id = "form";
   form.action = "https://formsubmit.co/" + EMAIL; form.method = "POST";
-  form.innerHTML = `<div class="k">se vuoi</div><h3>Scrivimi altro</h3>
+  form.innerHTML = `<div class="k">la tua risposta</div><h3>Invia la tua risposta</h3>
+    <p class="form-p">Se vuoi, puoi scrivermi anche altro qui sotto. Non è obbligatorio: anche senza scrivere niente, mi arriva la tua risposta.</p>
+    <div class="form-lab">scrivi altro <span>(facoltativo)</span></div>
     <textarea name="messaggio" id="msg" placeholder="Qui puoi scrivere quello che vuoi. Arriva solo a me."></textarea>
     <input type="hidden" name="risposta" id="f-risposta">
     <input type="hidden" name="voto" id="f-voto">
@@ -503,7 +534,7 @@ const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto
     <input type="hidden" name="_template" value="box">
     <input type="hidden" name="_captcha" value="false">
     <input type="hidden" name="_next" value="${base}?inviato=1">
-    <button type="submit" class="go" id="invia">invia</button><div class="stato" id="stato"></div>`;
+    <button type="submit" class="go" id="invia">invia la tua risposta</button><div class="stato" id="stato"></div>`;
   let inviando = false;
   form.addEventListener("submit", async e=>{
     const btn = form.querySelector("#invia"), stato = form.querySelector("#stato");
@@ -513,6 +544,8 @@ const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto
     if(form.dataset.classico) return;            // ripiego: invio classico, lascia fare al browser
     e.preventDefault();
     if(inviando) return; inviando = true;
+    // iPhone: "sblocco" Per te dentro il tocco, così i titoli di coda potranno partire da soli
+    try{ const p = $("#song3"); p.muted = true; p.play().then(()=>{ p.pause(); p.currentTime = 0; p.muted = false; }).catch(()=>{ p.muted = false; }); }catch(_){}
     btn.disabled = true; btn.textContent = "invio in corso…"; stato.textContent = "";
     const dati = Object.fromEntries(new FormData(form).entries());
     delete dati._next;
@@ -527,6 +560,7 @@ const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto
       const j = await r.json().catch(()=>({}));
       if(!r.ok || String(j.success) !== "true") throw 0;
       show("v-fine"); burst(document.querySelector("#v-fine h1"), true);
+      setTimeout(()=> show("v-coda"), 4500);   // dopo il grazie partono da soli i titoli di coda
     }catch(_){
       // ripiego: invio classico (più lento, fino a un minuto)
       stato.textContent = "ci vuole un attimo, fino a un minuto: non chiudere la pagina";
@@ -547,6 +581,7 @@ const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto
   if(new URLSearchParams(location.search).has("inviato")){
     $("#cover").classList.add("gone"); document.body.classList.remove("locked");
     show("v-fine");
+    setTimeout(()=> show("v-coda"), 4500);
   }
 
   /* --- petali --- */
