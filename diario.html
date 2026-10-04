@@ -126,9 +126,12 @@ const salva = (k,v) => { try{ localStorage.setItem(k, v); }catch(_){} };
 
 /* --- aperto solo se la risposta è sì (Francesco lo apre una volta con ?francesco) --- */
 if(new URLSearchParams(location.search).has("francesco")) salva("pn-diario", "1");
-const aperto = leggi("pn-inviata") === "si" || leggi("pn-diario") === "1";
-$("#chiuso").hidden = aperto;
-$("#aperto").hidden = !aperto;
+let aperto = false;
+function apri(){
+  aperto = true; $("#chiuso").hidden = true; $("#aperto").hidden = false;
+  $("#aperto").querySelectorAll(".reveal").forEach(el=> el.classList.add("in"));
+}
+if(leggi("pn-inviata") === "si" || leggi("pn-diario") === "1") apri();
 
 /* --- comparsa in ordine --- */
 const io = new IntersectionObserver(es=> es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }), {threshold:.12});
@@ -177,21 +180,26 @@ function disegna(lista, ultima){
   });
 }
 async function carica(){
-  if(!API){ disegna([]); return []; }
+  if(!API){ if(aperto) disegna([]); return []; }
   try{
     const r = await fetch(API + "?t=" + Date.now());
     const j = await r.json();
-    const lista = Array.isArray(j) ? j : [];
+    const lista = Array.isArray(j) ? j : (Array.isArray(j.voci) ? j.voci : []);
+    if(j.risposta === "si" && !aperto){ salva("pn-inviata", "si"); apri(); }
+    if(j.risposta === "no" && aperto && leggi("pn-diario") !== "1"){   // ha cambiato idea: il diario si richiude
+      salva("pn-inviata", "no"); aperto = false; $("#aperto").hidden = true; $("#chiuso").hidden = false; return lista;
+    }
+    if(!aperto) return lista;
     salva("pn-diario-copia", JSON.stringify(lista));
     disegna(lista, lista.length ? lista[lista.length-1].quando : "");
     return lista;
-  }catch(_){ $("#stato-lista").textContent = "non riesco ad aprire il diario adesso, riprova tra poco"; return []; }
+  }catch(_){ if(aperto) $("#stato-lista").textContent = "non riesco ad aprire il diario adesso, riprova tra poco"; return []; }
 }
 if(aperto){
   // intanto mostra l'ultima copia salvata sul telefono, poi aggiorna
   try{ const c = JSON.parse(leggi("pn-diario-copia") || "null"); if(Array.isArray(c) && c.length){ disegna(c, ""); $("#stato-lista").textContent = "aggiorno…"; } }catch(_){}
-  carica();
 }
+carica();   // chiede al foglio anche la risposta: se è sì, il diario si apre su qualsiasi telefono
 
 /* --- scrivere --- */
 $("#scrivi").addEventListener("submit", async e=>{
