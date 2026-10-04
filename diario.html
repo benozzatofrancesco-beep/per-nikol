@@ -59,6 +59,8 @@
   .voce p{margin-top:4px;font-family:"Cormorant Garamond";font-size:19.5px;line-height:1.6;color:#4a0e2e;white-space:pre-line;overflow-wrap:anywhere}
   .voce.nuova{animation:nuova 1.2s cubic-bezier(.2,.8,.2,1)}
   @keyframes nuova{from{opacity:0;transform:translateY(16px)}}
+  .nota-img{margin:12px 0 4px;padding:8px;border-radius:16px;background:#fff;box-shadow:0 10px 26px rgba(140,42,94,.14);transform:rotate(-1deg)}
+  .nota-img img{display:block;width:100%;border-radius:10px}
   .vuoto{margin-top:40px;text-align:center;font-family:"Cormorant Garamond";font-style:italic;font-size:21px;line-height:1.5;color:var(--ink2)}
   [hidden]{display:none !important}
   .indietro{display:block;text-align:center;margin-top:46px;font-size:12px;letter-spacing:.18em;color:var(--muted);text-decoration:none}
@@ -152,6 +154,22 @@ const titoloGiorno = d => {
 };
 const ora = d => String(d.getHours()).padStart(2,"0") + ":" + String(d.getMinutes()).padStart(2,"0");
 
+/* il testo di una pagina; una riga [[foto/diario/nome.jpg]] diventa l'immagine (solo foto del sito) */
+function contenuto(testo){
+  const pezzi = [], righe = [];
+  const chiudi = () => { if(righe.length){ const p = document.createElement("p"); p.textContent = righe.join("\n").trim(); if(p.textContent) pezzi.push(p); righe.length = 0; } };
+  testo.split("\n").forEach(riga => {
+    const m = riga.trim().match(/^\[\[(foto\/diario\/[\w.-]+\.(?:jpe?g|png|webp))\]\]$/i);
+    if(m){
+      chiudi();
+      const fig = document.createElement("figure"); fig.className = "nota-img";
+      const img = document.createElement("img"); img.src = m[1]; img.alt = ""; img.loading = "lazy";
+      fig.appendChild(img); pezzi.push(fig);
+    }else righe.push(riga);
+  });
+  chiudi();
+  return pezzi;
+}
 function disegna(lista, ultima){
   const box = $("#pagine"); box.innerHTML = ""; $("#stato-lista").textContent = "";
   if(!lista.length){
@@ -173,8 +191,7 @@ function disegna(lista, ultima){
       const c = document.createElement("div"); c.className = "chi";
       const b = document.createElement("b"); b.textContent = r.chi;
       c.append(b, " ha scritto");
-      const p = document.createElement("p"); p.textContent = r.testo;
-      v.append(o, c, p); pag.appendChild(v);
+      v.append(o, c, ...contenuto(r.testo)); pag.appendChild(v);
     });
     g.append(t, pag); box.appendChild(g);
   });
