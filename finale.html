@@ -145,8 +145,12 @@
   .bg-row{display:flex;justify-content:space-between;gap:10px;font-size:14px;font-weight:500}
   .bg-row small{display:block;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:400}
   /* ---------- scrivimi ---------- */
-  .form{margin-top:44px;padding:24px 20px;border-radius:24px;background:rgba(255,248,251,.85);
+  .form{margin-top:44px}
+  .form-box{padding:24px 20px;border-radius:24px;background:rgba(255,248,251,.85);
     backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 18px 50px rgba(140,42,94,.15)}
+  .form-box + .form-box{margin-top:22px}
+  .form-box.invio{text-align:center;border:1.5px solid rgba(232,23,127,.25)}
+  .form-box.invio .form-p{margin-top:6px}
   .form .k{font-family:"Jost";font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--fuchsia)}
   .form h3{font-family:"Cormorant Garamond";font-weight:400;font-style:italic;font-size:28px;color:var(--ink);margin-top:6px}
   .form textarea{display:block;width:100%;min-height:150px;margin-top:16px;padding:16px;border-radius:16px;resize:vertical;
@@ -542,17 +546,22 @@ const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto
   const form = document.createElement("form");
   form.className = "form reveal"; form.id = "form";
   form.action = "https://formsubmit.co/" + EMAIL; form.method = "POST";
-  form.innerHTML = `<div class="k">la tua risposta</div><h3>Invia la tua risposta</h3>
-    <p class="form-p">Se vuoi, puoi scrivermi anche altro qui sotto. Non è obbligatorio: anche senza scrivere niente, mi arriva la tua risposta.</p>
-    <div class="form-lab">scrivi altro <span>(facoltativo)</span></div>
+  form.innerHTML = `<div class="form-box">
+    <div class="k">se vuoi · facoltativo</div><h3>Scrivimi altro</h3>
+    <p class="form-p">Solo se ti va. Puoi anche lasciarlo vuoto.</p>
     <textarea name="messaggio" id="msg" placeholder="Qui puoi scrivere quello che vuoi. Arriva solo a me."></textarea>
+    </div>
+    <div class="form-box invio">
+    <div class="k">la tua risposta</div><h3>Invia la tua risposta</h3>
+    <p class="form-p">Basta premere qui: la tua risposta mi arriva anche senza scrivere niente.</p>
     <input type="hidden" name="risposta" id="f-risposta">
     <input type="hidden" name="voto" id="f-voto">
     <input type="hidden" name="_subject" value="Risposta di Nikol">
     <input type="hidden" name="_template" value="box">
     <input type="hidden" name="_captcha" value="false">
     <input type="hidden" name="_next" value="${base}?inviato=1">
-    <button type="submit" class="go" id="invia">invia la tua risposta</button><div class="stato" id="stato"></div>`;
+    <button type="submit" class="go" id="invia">invia la tua risposta</button><div class="stato" id="stato"></div>
+    </div>`;
   let inviando = false;
   form.addEventListener("submit", async e=>{
     const btn = form.querySelector("#invia"), stato = form.querySelector("#stato");
