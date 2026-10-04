@@ -158,23 +158,33 @@
   }
     /* qualche petalo diventa 23:23 e si dissolve */
   let morphing = 0;
+  const FRASI = [
+    {t:'23:23', font:'300 19px Jost, sans-serif'},
+    {t:'23:23', font:'300 19px Jost, sans-serif'},
+    {t:'oggi la luna è bella, vero?', font:'italic 400 19px "Cormorant Garamond", serif'},
+    {t:'月が綺麗ですね', font:'300 16px "Hiragino Mincho ProN", serif'},
+    {t:'un giorno, tre autunni', font:'italic 400 19px "Cormorant Garamond", serif'},
+    {t:'一日三秋', font:'300 17px "Hiragino Mincho ProN", serif'}
+  ];
   function draw(p){
     if(p.m === undefined) p.m = -1;
     if(p.m < 0 && !p.fast && morphing < 5 && p.y > H*.08 && p.y < H*.85 && Math.random() < .009){ p.m = 0; morphing++; }
     if(p.m < 0){ drawPetal(p); return; }
     p.m++;
-    const T1 = 55, T2 = 75, T3 = 120;
+    const T1 = 90, T2 = 110, T3 = 140;
     let pa = 0, ta = 0, sc = 1;
     if(p.m < T1){ pa = 1 - p.m/T1; ta = p.m/T1; }
     else if(p.m < T1+T2){ ta = 1; }
-    else if(p.m < T1+T2+T3){ const k = (p.m-T1-T2)/T3; ta = 1-k; sc = 1 + k*.7; }
-    else { p.m = -1; morphing--; p.y = -20; p.x = Math.random()*W; return; }
+    else if(p.m < T1+T2+T3){ const k = (p.m-T1-T2)/T3; ta = 1-k; sc = 1 + k*.25; }
+    else { p.m = -1; p.f = null; morphing--; p.y = -20; p.x = Math.random()*W; return; }
     if(pa > 0){ const a0 = p.a; p.a = a0*pa; drawPetal(p); p.a = a0; }
-    cx.save(); cx.translate(p.x, p.y); cx.scale(sc, sc); cx.globalAlpha = ta*.9;
-    cx.font = '400 19px Jost, sans-serif'; cx.textAlign = 'center'; cx.textBaseline = 'middle';
-    cx.fillStyle = (p.x|0) % 2 ? 'rgb(232,23,127)' : 'rgb(23,168,92)';
-    cx.shadowColor = 'rgba(255,245,250,1)'; cx.shadowBlur = 10;
-    cx.fillText('23:23', 0, 0); cx.restore();
+    cx.save(); cx.translate(p.x, p.y); cx.scale(sc, sc); cx.globalAlpha = ta*.42;
+    const fr = p.f || (p.f = FRASI[Math.random()*FRASI.length|0]);
+    cx.font = fr.font; cx.textAlign = 'center'; cx.textBaseline = 'middle';
+    const w = cx.measureText(fr.t).width/2 + 12;
+    if(p.x < w) p.x = w; if(p.x > W - w) p.x = W - w;
+    cx.fillStyle = (p.x|0) % 2 ? 'rgb(214,40,128)' : 'rgb(40,150,92)';
+    cx.fillText(fr.t, 0, 0); cx.restore();
   }
   (function loop(){
     cx.clearRect(0,0,W,H);
