@@ -115,7 +115,7 @@
 <script>
 /* ============ impostazioni ============ */
 /* indirizzo della Web App di Google Apps Script (il codice sta in diario/apps-script.gs, fuori dal repo) */
-const API = "";
+const API = "https://script.google.com/macros/s/AKfycbzodlzZSscm6QqSoHc28-M2-BwCbMOuKnT-JR1Y6hJYynvo8YtXWAFzaoLHihWiOC8AsA/exec";
 const CODICE = "2323";
 
 const $ = s => document.querySelector(s);
@@ -182,11 +182,16 @@ async function carica(){
     const r = await fetch(API + "?t=" + Date.now());
     const j = await r.json();
     const lista = Array.isArray(j) ? j : [];
+    salva("pn-diario-copia", JSON.stringify(lista));
     disegna(lista, lista.length ? lista[lista.length-1].quando : "");
     return lista;
   }catch(_){ $("#stato-lista").textContent = "non riesco ad aprire il diario adesso, riprova tra poco"; return []; }
 }
-if(aperto) carica();
+if(aperto){
+  // intanto mostra l'ultima copia salvata sul telefono, poi aggiorna
+  try{ const c = JSON.parse(leggi("pn-diario-copia") || "null"); if(Array.isArray(c) && c.length){ disegna(c, ""); $("#stato-lista").textContent = "aggiorno…"; } }catch(_){}
+  carica();
+}
 
 /* --- scrivere --- */
 $("#scrivi").addEventListener("submit", async e=>{
