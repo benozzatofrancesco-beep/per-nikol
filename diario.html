@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffd3e4">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="favicon.png">
+<title>Il nostro diario</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Pinyon+Script&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="capitolo.css?v=20">
+<style>
+  .box{padding:24px 20px;border-radius:24px;background:rgba(255,248,251,.88);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 18px 50px rgba(140,42,94,.15)}
+  .box .k{font-family:"Jost";font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--fuchsia)}
+  .box h2{font-family:"Cormorant Garamond";font-weight:400;font-style:italic;font-size:30px;color:var(--ink);margin:6px 0 6px}
+  .box .sotto{font-family:"Cormorant Garamond";font-size:18px;line-height:1.5;color:var(--ink2)}
+
+  /* chiuso finché la risposta non è sì */
+  .chiuso{text-align:center;margin-top:10px;border:1.5px dashed rgba(232,23,127,.3)}
+  .lucchetto{width:58px;height:58px;margin:4px auto 14px;border-radius:50%;display:grid;place-items:center;
+    background:linear-gradient(135deg,#ffe8f2,#ffd3e4);box-shadow:inset 0 0 0 1px rgba(232,23,127,.2)}
+  .lucchetto svg{width:26px;height:26px;fill:none;stroke:var(--fuchsia);stroke-width:1.6;stroke-linecap:round}
+  .chiuso a{display:inline-block;margin-top:18px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--fuchsia);text-decoration:none}
+
+  /* scrivere */
+  .lab{display:block;margin-top:18px;font-family:"Jost";font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--fuchsia)}
+  .chi-scelta{display:flex;gap:10px;margin-top:8px}
+  .chi-scelta button{flex:1;padding:13px;border-radius:14px;border:1.5px solid rgba(232,23,127,.25);background:#fff;cursor:pointer;
+    font-family:"Cormorant Garamond";font-style:italic;font-size:21px;color:var(--ink2)}
+  .chi-scelta button.on{border-color:var(--fuchsia);background:#ffe8f2;color:var(--fuchsia)}
+  .chi-scelta button[data-chi="Nikol"].on{border-color:var(--g3);background:#e9fbef;color:var(--g4)}
+  .box textarea{display:block;width:100%;min-height:150px;margin-top:8px;padding:14px 16px;border-radius:14px;resize:vertical;
+    border:1px solid rgba(232,23,127,.2);background:#fff;font-family:"Jost";font-size:16px;line-height:1.5;color:var(--ink);outline:none}
+  .box textarea:focus{border-color:var(--fuchsia)}
+  .scrivi-btn{display:block;width:100%;margin-top:18px;padding:18px;border:none;border-radius:18px;cursor:pointer;
+    font-family:"Jost";font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:#fff;
+    background:linear-gradient(135deg,#ff5aa5,#e8177f);box-shadow:0 14px 30px rgba(232,23,127,.3)}
+  .scrivi-btn:disabled{opacity:.55}
+  .msg{text-align:center;margin-top:12px;font-size:13px;color:var(--muted);min-height:1.2em}
+
+  /* le pagine del diario, un giorno alla volta */
+  .stato-lista{text-align:center;font-size:13px;color:var(--muted);margin:30px 0}
+  .giorno{margin-top:46px}
+  .giorno-data{display:flex;align-items:center;gap:14px;margin-bottom:18px;
+    font-family:"Jost";font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--fuchsia)}
+  .giorno-data::before,.giorno-data::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(232,23,127,.35),transparent)}
+  .pagina{padding:8px 20px;border-radius:22px;background:rgba(255,250,252,.9);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 16px 40px rgba(140,42,94,.13)}
+  .voce{padding:16px 0}
+  .voce + .voce{border-top:1px dashed rgba(232,23,127,.18)}
+  .voce .chi{font-family:"Cormorant Garamond";font-style:italic;font-size:17px;color:var(--muted)}
+  .voce .chi b{font-family:"Pinyon Script",cursive;font-weight:400;font-style:normal;font-size:27px;color:var(--rose);margin-right:4px}
+  .voce.nikol-v .chi b{background:linear-gradient(120deg,var(--g4),var(--g3),var(--g2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .voce .ora{float:right;font-family:"Jost";font-size:11px;letter-spacing:.15em;color:var(--muted);margin-top:10px}
+  .voce p{margin-top:4px;font-family:"Cormorant Garamond";font-size:19.5px;line-height:1.6;color:#4a0e2e;white-space:pre-line;overflow-wrap:anywhere}
+  .voce.nuova{animation:nuova 1.2s cubic-bezier(.2,.8,.2,1)}
+  @keyframes nuova{from{opacity:0;transform:translateY(16px)}}
+  .vuoto{margin-top:40px;text-align:center;font-family:"Cormorant Garamond";font-style:italic;font-size:21px;line-height:1.5;color:var(--ink2)}
+  [hidden]{display:none !important}
+  .indietro{display:block;text-align:center;margin-top:46px;font-size:12px;letter-spacing:.18em;color:var(--muted);text-decoration:none}
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="bg-tint"></div>
+<canvas id="petals"></canvas>
+
+<main>
+  <header class="ch-head reveal">
+    <div class="n">il prossimo capitolo</div>
+    <h1>Il nostro diario</h1>
+    <div class="orn"></div>
+  </header>
+
+  <p class="txt reveal">Qui dentro possiamo scrivere le nostre cose. Perché WhatsApp ha già troppi ricordi brutti.</p>
+  <p class="txt reveal">Basta scegliere il tuo nome e scrivere. Al resto ci pensa il diario: il giorno, l'ora, chi l'ha scritto. Pagina dopo pagina.</p>
+
+  <!-- chiuso: si apre solo se la risposta è sì -->
+  <div class="box chiuso reveal" id="chiuso">
+    <div class="lucchetto"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg></div>
+    <h2>Si apre solo con un sì</h2>
+    <p class="sotto">Questo capitolo si attiva solo se la tua risposta è sì. Se lo è, invia la tua risposta alla fine della lettera, e il diario si apre.</p>
+    <a href="finale.html#domanda">vai alla domanda →</a>
+  </div>
+
+  <!-- aperto -->
+  <div id="aperto" hidden>
+    <form class="box reveal" id="scrivi" autocomplete="off">
+      <div class="k">oggi</div>
+      <h2>Scrivi nel diario</h2>
+      <span class="lab">chi sei</span>
+      <div class="chi-scelta">
+        <button type="button" data-chi="Nikol">Nikol</button>
+        <button type="button" data-chi="Francesco">Francesco</button>
+      </div>
+      <span class="lab">cosa vuoi scrivere</span>
+      <textarea id="testo" maxlength="4000" placeholder="Scrivi qui…"></textarea>
+      <button type="submit" class="scrivi-btn" id="invia">scrivi nel diario</button>
+      <div class="msg" id="msg"></div>
+    </form>
+
+    <div class="stato-lista" id="stato-lista">apro il diario…</div>
+    <div id="pagine"></div>
+  </div>
+
+  <a class="indietro" href="index.html#capitoli">← torna all'indice</a>
+</main>
+
+<script>
+/* ============ impostazioni ============ */
+/* indirizzo della Web App di Google Apps Script (il codice sta in diario/apps-script.gs, fuori dal repo) */
+const API = "";
+const CODICE = "2323";
+
+const $ = s => document.querySelector(s);
+const GIORNI = ["domenica","lunedì","martedì","mercoledì","giovedì","venerdì","sabato"];
+const MESI = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];
+const leggi = k => { try{ return localStorage.getItem(k) || ""; }catch(_){ return ""; } };
+const salva = (k,v) => { try{ localStorage.setItem(k, v); }catch(_){} };
+
+/* --- aperto solo se la risposta è sì (Francesco lo apre una volta con ?francesco) --- */
+if(new URLSearchParams(location.search).has("francesco")) salva("pn-diario", "1");
+const aperto = leggi("pn-inviata") === "si" || leggi("pn-diario") === "1";
+$("#chiuso").hidden = aperto;
+$("#aperto").hidden = !aperto;
+
+/* --- comparsa in ordine --- */
+const io = new IntersectionObserver(es=> es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }), {threshold:.12});
+document.querySelectorAll(".reveal").forEach(el=> io.observe(el));
+
+/* --- chi scrive --- */
+let chi = leggi("pn-chi");
+function setChi(c){ chi = c; document.querySelectorAll("[data-chi]").forEach(b=> b.classList.toggle("on", b.dataset.chi === c)); }
+document.querySelectorAll("[data-chi]").forEach(b=> b.addEventListener("click", ()=>{ setChi(b.dataset.chi); salva("pn-chi", chi); }));
+if(chi) setChi(chi);
+
+/* --- le pagine: raggruppate per giorno, il giorno più recente in alto --- */
+const chiaveGiorno = d => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+const titoloGiorno = d => {
+  const oggi = new Date(), ieri = new Date(Date.now() - 864e5);
+  const base = `${GIORNI[d.getDay()]} ${d.getDate()} ${MESI[d.getMonth()]} ${d.getFullYear()}`;
+  return chiaveGiorno(d) === chiaveGiorno(oggi) ? "oggi · " + base : chiaveGiorno(d) === chiaveGiorno(ieri) ? "ieri · " + base : base;
+};
+const ora = d => String(d.getHours()).padStart(2,"0") + ":" + String(d.getMinutes()).padStart(2,"0");
+
+function disegna(lista, ultima){
+  const box = $("#pagine"); box.innerHTML = ""; $("#stato-lista").textContent = "";
+  if(!lista.length){
+    const v = document.createElement("div"); v.className = "vuoto";
+    v.textContent = "La prima pagina è ancora bianca. La scriviamo insieme.";
+    box.appendChild(v); return;
+  }
+  const giorni = new Map();
+  lista.map(r => ({...r, d:new Date(r.quando)})).filter(r => !isNaN(r.d)).sort((a,b) => a.d - b.d)
+    .forEach(r => { const k = chiaveGiorno(r.d); if(!giorni.has(k)) giorni.set(k, []); giorni.get(k).push(r); });
+  [...giorni.values()].reverse().forEach(voci => {
+    const g = document.createElement("section"); g.className = "giorno";
+    const t = document.createElement("div"); t.className = "giorno-data"; t.textContent = titoloGiorno(voci[0].d);
+    const pag = document.createElement("div"); pag.className = "pagina";
+    voci.forEach(r => {
+      const v = document.createElement("div");
+      v.className = "voce" + (r.chi === "Nikol" ? " nikol-v" : "") + (ultima && r.quando === ultima ? " nuova" : "");
+      const o = document.createElement("span"); o.className = "ora"; o.textContent = ora(r.d);
+      const c = document.createElement("div"); c.className = "chi";
+      const b = document.createElement("b"); b.textContent = r.chi;
+      c.append(b, " ha scritto");
+      const p = document.createElement("p"); p.textContent = r.testo;
+      v.append(o, c, p); pag.appendChild(v);
+    });
+    g.append(t, pag); box.appendChild(g);
+  });
+}
+async function carica(){
+  if(!API){ disegna([]); return []; }
+  try{
+    const r = await fetch(API + "?t=" + Date.now());
+    const j = await r.json();
+    const lista = Array.isArray(j) ? j : [];
+    disegna(lista, lista.length ? lista[lista.length-1].quando : "");
+    return lista;
+  }catch(_){ $("#stato-lista").textContent = "non riesco ad aprire il diario adesso, riprova tra poco"; return []; }
+}
+if(aperto) carica();
+
+/* --- scrivere --- */
+$("#scrivi").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const msg = $("#msg"), btn = $("#invia"), testo = $("#testo").value.trim();
+  if(!chi){ msg.textContent = "prima scegli il tuo nome 🙂"; return; }
+  if(!testo){ msg.textContent = "scrivi qualcosa 🙂"; return; }
+  if(!API){ msg.textContent = "il diario non è ancora attivo, ci sto lavorando 🙂"; return; }
+  btn.disabled = true; btn.textContent = "scrivo…"; msg.textContent = "";
+  try{
+    const r = await fetch(API, { method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body: JSON.stringify({chi, testo, codice:CODICE}) });
+    const j = await r.json();
+    if(!j.ok) throw 0;
+    $("#testo").value = ""; msg.textContent = "scritto 🤍";
+    await carica();
+    const n = document.querySelector(".voce.nuova"); if(n) n.scrollIntoView({behavior:"smooth", block:"center"});
+  }catch(_){ msg.textContent = "non è andato, riprova tra poco"; }
+  btn.disabled = false; btn.textContent = "scrivi nel diario";
+});
+
+/* --- petali --- */
+(function(){
+  const cv = $("#petals"), cx = cv.getContext("2d"), DPR = Math.min(devicePixelRatio||1, 2);
+  let W, H;
+  function size(){ W = innerWidth; H = innerHeight; cv.width = W*DPR; cv.height = H*DPR; cx.setTransform(DPR,0,0,DPR,0,0); }
+  size(); addEventListener("resize", size);
+  const COL = ["255,90,165","232,23,127","255,159,198","95,227,154","255,255,255"];
+  const petal = () => ({x:Math.random()*W, y:Math.random()*H, s:6+Math.random()*9, vy:.35+Math.random()*.7, vx:-.3+Math.random()*.6,
+    r:Math.random()*6.28, vr:-.02+Math.random()*.04, a:.35+Math.random()*.4, c:COL[Math.random()*COL.length|0], w:Math.random()*6.28});
+  const ps = Array.from({length:18}, petal);
+  (function loop(){
+    cx.clearRect(0,0,W,H);
+    for(const p of ps){
+      p.w += .02; p.x += p.vx + Math.sin(p.w)*.4; p.y += p.vy; p.r += p.vr;
+      if(p.y > H+20){ p.y = -20; p.x = Math.random()*W; }
+      cx.save(); cx.translate(p.x,p.y); cx.rotate(p.r); cx.globalAlpha = p.a; cx.fillStyle = `rgb(${p.c})`;
+      cx.beginPath(); cx.ellipse(0,0,p.s*.55,p.s,0,0,6.28); cx.fill(); cx.restore();
+    }
+    requestAnimationFrame(loop);
+  })();
+})();
+</script>
+</body>
+</html>

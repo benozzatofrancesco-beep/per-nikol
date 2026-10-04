@@ -541,10 +541,10 @@ const chapters = [
   {t:"La distruzione",                open:true,  href:"capitolo-9.html"},
   {t:"Settembre 2026",                open:true,  href:"capitolo-10.html"},
   {t:"Lettera finale",                open:true,  href:"finale.html"},
+  {t:"Il nostro diario",              open:true,  href:"diario.html", img:"foto/c11-1.jpg"},
 ];
 const roman = ["I","II","III","IV","V","VI","VII","VIII","IX","X","✉︎","∞"];
-// se ha risposto sì, compare anche il prossimo capitolo
-try{ if(localStorage.getItem("pn-risposta") === "si") chapters.push({t:"Da qui in poi", open:true, href:"insieme.html", img:"foto/c11-1.jpg"}); }catch(_){}
+
 const grid = document.getElementById("grid");
 chapters.forEach((c,i)=>{
   const el = document.createElement(c.open ? "a" : "div");
