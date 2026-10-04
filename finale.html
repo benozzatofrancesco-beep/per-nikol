@@ -158,6 +158,29 @@
     background:linear-gradient(135deg,#ff5aa5,#e8177f);box-shadow:0 14px 34px rgba(232,23,127,.35)}
   .cf-link{border:1px solid rgba(255,227,238,.35);background:none;border-radius:26px;padding:12px 24px;cursor:pointer;text-decoration:none;
     font-family:"Jost";font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:#ffe3ee}
+  /* ---------- l'ultima parola, sotto chiave ---------- */
+  .ultima{margin:44px 0 30px;padding:26px 22px;border-radius:24px;text-align:center;background:rgba(255,248,251,.8);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 18px 50px rgba(140,42,94,.15);border:1.5px dashed rgba(232,23,127,.3)}
+  .u-lock{width:54px;height:54px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ffe8f2,#ffd3e4)}
+  .u-lock svg{width:24px;height:24px;fill:none;stroke:var(--fuchsia);stroke-width:1.6;stroke-linecap:round}
+  .u-k{font-family:"Jost";font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--fuchsia);margin-bottom:10px}
+  .ultima p{font-family:"Cormorant Garamond";font-size:18.5px;line-height:1.5;color:var(--ink2);margin-bottom:8px}
+  .ultima .u-pw{font-size:16px;color:var(--muted)}
+  .ultima .u-pw b{font-family:"Jost";font-weight:500;color:var(--g3);letter-spacing:.08em}
+  .u-form{display:flex;gap:10px;margin-top:14px}
+  .u-form input{flex:1;min-width:0;padding:14px 16px;border-radius:14px;border:1px solid rgba(232,23,127,.25);background:#fff;outline:none;
+    font-family:"Jost";font-size:20px;letter-spacing:.2em;text-align:center;color:var(--ink)}
+  .u-form input:focus{border-color:var(--fuchsia)}
+  .u-form button{padding:0 22px;border:none;border-radius:14px;cursor:pointer;font-family:"Jost";font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:#fff;
+    background:linear-gradient(135deg,#ff5aa5,#e8177f)}
+  .ultima.shake{animation:ushake .45s}
+  @keyframes ushake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+  .u-aperta{display:none;font-family:"Pinyon Script",cursive;font-size:84px;line-height:1.1;padding:20px 0 6px;
+    background:linear-gradient(120deg,#e8177f,#ff5aa5 55%,#e8177f);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .ultima.aperta{border-style:solid;border-color:rgba(232,23,127,.18)}
+  .ultima.aperta .u-chiusa{display:none}
+  .ultima.aperta .u-aperta{display:block;animation:uapri 1.6s cubic-bezier(.2,.8,.2,1)}
+  @keyframes uapri{from{opacity:0;transform:scale(.85);filter:blur(8px)}}
   /* ---------- scrivimi ---------- */
   .form{margin-top:44px}
   .form-box{padding:24px 20px;border-radius:24px;background:rgba(255,248,251,.85);
@@ -252,6 +275,24 @@
     <p class="txt reveal">Ma se non sarà così, ti ringrazio. Per questa fantastica storia che mi hai dato. Mi servirà.</p>
     <p class="txt reveal">E in ogni caso, comunque vada, lo so che è strano da dire, ma ti ringrazio anche per questa batosta.</p>
     <p class="txt reveal">Perché mi ha fatto rendere conto di cosa voglio veramente nella vita. Di cosa mi interessa di più. E anche di quello che ho perso.</p>
+    <p class="txt reveal">Ti meriti un'altra persona, e lo so. Vorrei tanto essere io. Ma accetterò anche questo.</p>
+    <p class="txt reveal">Devo lasciarti andare, davvero. L'amore è mancanza, non possesso. È giusto così.</p>
+    <p class="txt reveal">Spero che questa storia ti sia piaciuta. Spero di poterti fare tante altre cose così.</p>
+    <p class="txt reveal">E spero di non essere mai solo un numero, tra le mille persone che hai conosciuto nella tua vita.</p>
+    <p class="txt reveal">Permettimi di dirlo un'ultima volta: grazie, amore.</p>
+    <div class="ultima reveal" id="ultima">
+      <div class="u-chiusa">
+        <div class="u-lock"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg></div>
+        <div class="u-k">un'ultima parola</div>
+        <p>Qui sotto c'è ancora una cosa. Se non vuoi saperne nulla, non mettere la password: ti sembreranno parole al vento.</p>
+        <p class="u-pw">La password è sempre la stessa: <b>23:23</b></p>
+        <form class="u-form" id="u-form" autocomplete="off">
+          <input id="u-pw" inputmode="numeric" maxlength="5" placeholder="••:••" aria-label="Password">
+          <button type="submit">apri</button>
+        </form>
+      </div>
+      <div class="u-aperta" aria-hidden="true">Ti amo.</div>
+    </div>
     <div class="quote reveal">Ti voglio<br>tantissimo bene.</div>
     <div class="luna reveal">
       <div class="moon"></div>
@@ -555,6 +596,20 @@ function salvaRisposta(valore, tentativo){
     scrollTo({top:0, behavior:"instant"});
     cascade($("#"+id), 150);
   }
+  /* l'ultima parola: si apre solo con 23:23 */
+  $("#u-form").addEventListener("submit", e=>{
+    e.preventDefault();
+    const box = $("#ultima"), v = $("#u-pw").value.replace(/\D/g, "");
+    if(v === "2323"){
+      $("#u-pw").blur();
+      box.classList.add("aperta");
+      box.querySelector(".u-aperta").removeAttribute("aria-hidden");
+      setTimeout(()=> burst(box.querySelector(".u-aperta"), true), 300);
+    }else{
+      $("#u-pw").value = "";
+      box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake");
+    }
+  });
   $("#roll").addEventListener("animationend", ()=> $("#coda-fine").classList.add("on"));
   $("#cf-rivedi").addEventListener("click", ()=> show("v-coda"));
   document.querySelectorAll("[data-go]").forEach(b=> b.addEventListener("click", ()=> show(b.dataset.go)));
