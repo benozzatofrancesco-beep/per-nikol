@@ -350,6 +350,12 @@
   .introvid.via{opacity:0;transition:opacity 1.2s ease}
   .introvid video{width:100%;height:100%;object-fit:cover;display:block}
   .cominciamo{text-align:center;margin:56px 0 0;font-family:"Pinyon Script",cursive;font-size:52px;color:var(--fuchsia)}
+  .vol{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:34px;padding:12px 16px;border-radius:12px;
+    background:#18181b;border:1px solid #2a2a30;font-size:14px;color:#d4d4d8}
+  .vol svg{width:22px;height:22px;flex:none}
+  .vol path{fill:#f2f2f4}
+  .vol path.w{fill:none;stroke:#3ecf7a;stroke-width:1.8;stroke-linecap:round;animation:onda 1.4s ease-in-out infinite}
+  @keyframes onda{0%,100%{opacity:.35}50%{opacity:1}}
   /* ---------- tasto musica ---------- */
   .music{
     position:fixed;z-index:70;top:calc(14px + env(safe-area-inset-top));right:14px;
@@ -408,6 +414,7 @@
         <svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>
       </button>
       <p class="tfa-foot">Scegli l'account per continuare</p>
+      <div class="vol"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path class="w" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/></svg>Per continuare, alza il volume</div>
     </div>
 
     <!-- fattore 1: password -->
