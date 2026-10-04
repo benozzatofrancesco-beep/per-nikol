@@ -214,7 +214,7 @@
 <canvas id="petals"></canvas>
 <a class="indice-fab" href="index.html#capitoli" aria-label="Indice"><svg viewBox="0 0 24 24"><path d="M5 7h14M5 12h14M5 17h9"/></svg>indice</a>
 
-<audio id="song" src="musica/finale.mp3?v=6" loop preload="auto" playsinline></audio>
+<audio id="song" src="musica/someone-like-you.mp3?v=1" loop preload="auto" playsinline></audio>
 <audio id="song2" src="musica/telephones.mp3?v=6" loop preload="auto" playsinline></audio>
 <audio id="song3" src="musica/capitolo-6.mp3?v=6" preload="none" playsinline></audio>
 <button class="music" id="music" aria-label="Musica"><span class="bars"><i></i><i></i><i></i></span></button>
@@ -478,7 +478,7 @@
         <div class="cv-song"><span>Colapso</span><i>Kevin Kaarl</i></div>
         <div class="cv-song"><span>Scott Street</span><i>Phoebe Bridgers</i></div>
         <div class="cv-song"><span>Love Is in the Air, Pt. 1</span><i></i></div>
-        <div class="cv-song"><span>Devastante</span><i>Olly, JVLI</i></div>
+        <div class="cv-song"><span>Someone Like You</span><i>Adele</i></div>
         <div class="cv-song"><span>Telephones</span><i>Vacations</i></div>
         <div class="cv-sez">una storia di</div>
         <div class="cv-nomi">Francesco <small>&amp;</small> <span class="nikol">Nikol</span></div>
@@ -548,7 +548,7 @@ function salvaRisposta(valore, tentativo){
   function fade(to, ms, a){ a = a || song; clearInterval(a._f); const from = a.volume, t0 = Date.now();
     a._f = setInterval(()=>{ const k = Math.min(1,(Date.now()-t0)/ms); try{ a.volume = from + (to-from)*k; }catch(_){}
       if(k>=1) clearInterval(a._f); }, 40); }
-  /* dalla domanda in poi: Alleria (Devastante sfuma) */
+  /* dalla domanda in poi: Telephones (Someone Like You sfuma) */
   function toAlleria(){
     if(song === alleria) return;
     const old = song; fade(0, 900, old); setTimeout(()=> old.pause(), 950);
