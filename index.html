@@ -391,7 +391,7 @@
 <div class="glow"></div>
 <div class="grain"></div>
 <canvas id="petals"></canvas>
-<audio id="song" src="musica/alleria.mp3?v=2" loop preload="auto" playsinline></audio>
+<audio id="song" src="musica/alleria.mp3?v=6" loop preload="auto" playsinline></audio>
 <div class="introvid"><video id="introvid" src="transizioni/intro.mp4?v=1" muted playsinline webkit-playsinline preload="auto"></video></div>
 <button class="music" id="music" aria-label="Musica"><span class="bars"><i></i><i></i><i></i></span></button>
 
@@ -667,6 +667,7 @@ function petal(x,y,fast,pal){
   };
 }
 let petals = Array.from({length: innerWidth<600 ? 22 : 38}, ()=>petal());
+  petals.forEach(p=>{ p.y = Math.random()*H; });
 function burst(el, pal){
   const r = el.getBoundingClientRect(), x=r.left+r.width/2, y=r.top+r.height/2;
   for(let i=0;i<60;i++) petals.push(petal(x,y,true,pal));
@@ -684,7 +685,7 @@ function drawPetal(p){
   let morphing = 0;
   function draw(p){
     if(p.m === undefined) p.m = -1;
-    if(p.m < 0 && !p.fast && morphing < 2 && p.y > H*.18 && p.y < H*.7 && Math.random() < .0016){ p.m = 0; morphing++; }
+    if(p.m < 0 && !p.fast && morphing < 5 && p.y > H*.08 && p.y < H*.85 && Math.random() < .009){ p.m = 0; morphing++; }
     if(p.m < 0){ drawPetal(p); return; }
     p.m++;
     const T1 = 55, T2 = 75, T3 = 120;

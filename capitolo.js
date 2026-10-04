@@ -144,6 +144,7 @@
       c: pal[Math.random()*pal.length|0], a: .45+Math.random()*.4, fast };
   }
   let petals = Array.from({length: 22}, ()=>petal());
+  petals.forEach(p=>{ p.y = Math.random()*H; });
   function burst(el){
     const r = el.getBoundingClientRect(), x=r.left+r.width/2, y=r.top+r.height/3;
     for(let i=0;i<50;i++) petals.push(petal(x,y,true, i%3 ? palette : green));
@@ -159,7 +160,7 @@
   let morphing = 0;
   function draw(p){
     if(p.m === undefined) p.m = -1;
-    if(p.m < 0 && !p.fast && morphing < 2 && p.y > H*.18 && p.y < H*.7 && Math.random() < .0016){ p.m = 0; morphing++; }
+    if(p.m < 0 && !p.fast && morphing < 5 && p.y > H*.08 && p.y < H*.85 && Math.random() < .009){ p.m = 0; morphing++; }
     if(p.m < 0){ drawPetal(p); return; }
     p.m++;
     const T1 = 55, T2 = 75, T3 = 120;

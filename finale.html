@@ -168,9 +168,9 @@
 <div class="bg-tint"></div>
 <canvas id="petals"></canvas>
 
-<audio id="song" src="musica/finale.mp3?v=1" loop preload="auto" playsinline></audio>
-<audio id="song2" src="musica/telephones.mp3?v=1" loop preload="auto" playsinline></audio>
-<audio id="song3" src="musica/capitolo-6.mp3?v=5" preload="none" playsinline></audio>
+<audio id="song" src="musica/finale.mp3?v=6" loop preload="auto" playsinline></audio>
+<audio id="song2" src="musica/telephones.mp3?v=6" loop preload="auto" playsinline></audio>
+<audio id="song3" src="musica/capitolo-6.mp3?v=6" preload="none" playsinline></audio>
 <button class="music" id="music" aria-label="Musica"><span class="bars"><i></i><i></i><i></i></span></button>
 
 <!-- ============ SCHERMATA TITOLO ============ -->
@@ -474,7 +474,7 @@ const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto
     const p = $("#song3"); if(song === p) return;
     const old = song; fade(0, 1200, old); setTimeout(()=> old.pause(), 1250);
     song = p; p.volume = 0; p.currentTime = 0;
-    p.play().then(()=>{ fade(.9, 3000, p); musicBtn.classList.remove("paused"); }).catch(()=>{});
+    p.play().then(()=>{ fade(.85, 3000, p); musicBtn.classList.remove("paused"); }).catch(()=>{});
   }
   function show(id){
     if(id === "v-domanda") toAlleria();
@@ -595,6 +595,7 @@ const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto
       vx: fast ? (Math.random()-.5)*9 : -.3+Math.random()*.6, vy: fast ? -4-Math.random()*6 : .3+Math.random()*.6,
       rot: Math.random()*6.28, vr:(Math.random()-.5)*.03, sway: Math.random()*6.28, c: pal[Math.random()*pal.length|0], a: .45+Math.random()*.4, fast }; }
   let petals = Array.from({length: 22}, ()=>petal());
+  petals.forEach(p=>{ p.y = Math.random()*H; });
   function burst(el, big){ const r = el.getBoundingClientRect(), x=r.left+r.width/2, y=r.top+r.height/3;
     for(let i=0;i<(big?90:50);i++) petals.push(petal(x,y,true, i%3 ? palette : green)); }
   function drawPetal(p){ cx.save(); cx.translate(p.x,p.y); cx.rotate(p.rot); cx.fillStyle = `rgba(${p.c},${p.a})`;
@@ -603,7 +604,7 @@ const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto
   let morphing = 0;
   function draw(p){
     if(p.m === undefined) p.m = -1;
-    if(p.m < 0 && !p.fast && morphing < 2 && p.y > H*.18 && p.y < H*.7 && Math.random() < .0016){ p.m = 0; morphing++; }
+    if(p.m < 0 && !p.fast && morphing < 5 && p.y > H*.08 && p.y < H*.85 && Math.random() < .009){ p.m = 0; morphing++; }
     if(p.m < 0){ drawPetal(p); return; }
     p.m++;
     const T1 = 55, T2 = 75, T3 = 120;
