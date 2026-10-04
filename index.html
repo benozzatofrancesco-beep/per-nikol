@@ -542,14 +542,16 @@ const chapters = [
   {t:"Settembre 2026",                open:true,  href:"capitolo-10.html"},
   {t:"Lettera finale",                open:true,  href:"finale.html"},
 ];
-const roman = ["I","II","III","IV","V","VI","VII","VIII","IX","X","✉︎"];
+const roman = ["I","II","III","IV","V","VI","VII","VIII","IX","X","✉︎","∞"];
+// se ha risposto sì, compare anche il prossimo capitolo
+try{ if(localStorage.getItem("pn-risposta") === "si") chapters.push({t:"Da qui in poi", open:true, href:"insieme.html", img:"foto/c11-1.jpg"}); }catch(_){}
 const grid = document.getElementById("grid");
 chapters.forEach((c,i)=>{
   const el = document.createElement(c.open ? "a" : "div");
   el.className = "ch reveal " + (c.open ? "open" : "soon");
   el.style.transitionDelay = (i*0.07)+"s";
   if(c.open) el.href = c.href;
-  const thumb = `foto/c${i+1}-1.jpg`;
+  const thumb = c.img || `foto/c${i+1}-1.jpg`;
   el.innerHTML = `<span class="num">${roman[i]}</span>
     <span class="tx"><span class="t">${c.t}</span><span class="s">${c.open ? "leggi →" : "presto"}</span></span>
     <span class="mini" style="background-image:url(${thumb})"></span>`;
