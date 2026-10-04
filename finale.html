@@ -285,9 +285,9 @@
         <div class="u-lock"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg></div>
         <div class="u-k">un'ultima parola</div>
         <p>Qui sotto c'è ancora una cosa. Se non vuoi saperne nulla, non mettere la password: ti sembreranno parole al vento.</p>
-        <p class="u-pw">La password è sempre la stessa: <b>23:23</b></p>
+        <p class="u-pw">La password è sempre la stessa: <b>2323</b></p>
         <form class="u-form" id="u-form" autocomplete="off">
-          <input id="u-pw" inputmode="numeric" maxlength="5" placeholder="••:••" aria-label="Password">
+          <input id="u-pw" inputmode="numeric" maxlength="5" placeholder="••••" aria-label="Password">
           <button type="submit">apri</button>
         </form>
       </div>
@@ -596,7 +596,7 @@ function salvaRisposta(valore, tentativo){
     scrollTo({top:0, behavior:"instant"});
     cascade($("#"+id), 150);
   }
-  /* l'ultima parola: si apre solo con 23:23 */
+  /* l'ultima parola: si apre solo con 2323 (va bene anche 23:23) */
   $("#u-form").addEventListener("submit", e=>{
     e.preventDefault();
     const box = $("#ultima"), v = $("#u-pw").value.replace(/\D/g, "");
