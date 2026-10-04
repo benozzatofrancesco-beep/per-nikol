@@ -461,6 +461,14 @@
 /* ============ impostazioni ============ */
 const DIARIO = "https://script.google.com/macros/s/AKfycbzodlzZSscm6QqSoHc28-M2-BwCbMOuKnT-JR1Y6hJYynvo8YtXWAFzaoLHihWiOC8AsA/exec";
 const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto e messaggio
+/* la risposta va anche al foglio del diario; Google a volte risponde male, quindi si riprova (salvarla due volte non fa danni) */
+function salvaRisposta(valore, tentativo){
+  tentativo = tentativo || 1;
+  fetch(DIARIO, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"},
+    body: JSON.stringify({tipo:"risposta", valore, codice:"2323"})})
+    .then(r => r.json()).then(j => { if(!j.ok) throw 0; })
+    .catch(()=>{ if(tentativo < 3) setTimeout(()=> salvaRisposta(valore, tentativo + 1), 4000); });
+}
 
 (function(){
   const $ = s => document.querySelector(s);
@@ -622,8 +630,7 @@ const EMAIL = "benozzato.francesco@gmail.com";   // dove arrivano risposta, voto
       if(!r.ok || String(j.success) !== "true") throw 0;
       try{ localStorage.setItem("pn-inviata", scelta); }catch(_){}   // il diario si apre solo con un sì inviato
       // la risposta va anche al foglio del diario, così si apre su qualsiasi telefono e resta aperto
-      fetch(DIARIO, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"},
-        body: JSON.stringify({tipo:"risposta", valore: scelta, codice:"2323"})}).catch(()=>{});
+      salvaRisposta(scelta);
       show("v-fine"); burst(document.querySelector("#v-fine h1"), true);
       setTimeout(()=> show("v-coda"), 4500);   // dopo il grazie partono da soli i titoli di coda
     }catch(_){

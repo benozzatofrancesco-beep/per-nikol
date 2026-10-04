@@ -179,11 +179,22 @@ function disegna(lista, ultima){
     g.append(t, pag); box.appendChild(g);
   });
 }
+/* Google ogni tanto risponde lento o con una pagina d'errore: si riprova da soli */
+async function prendi(){
+  for(let i = 0; i < 3; i++){
+    try{
+      const ctl = new AbortController(), t = setTimeout(()=> ctl.abort(), 12000);
+      const r = await fetch(API + "?t=" + Date.now(), {signal: ctl.signal});
+      clearTimeout(t);
+      return await r.json();
+    }catch(_){}
+  }
+  throw 0;
+}
 async function carica(){
   if(!API){ if(aperto) disegna([]); return []; }
   try{
-    const r = await fetch(API + "?t=" + Date.now());
-    const j = await r.json();
+    const j = await prendi();
     const lista = Array.isArray(j) ? j : (Array.isArray(j.voci) ? j.voci : []);
     if(j.risposta === "si" && !aperto){ salva("pn-inviata", "si"); apri(); }
     if(j.risposta === "no" && aperto && leggi("pn-diario") !== "1"){   // ha cambiato idea: il diario si richiude
@@ -209,15 +220,30 @@ $("#scrivi").addEventListener("submit", async e=>{
   if(!testo){ msg.textContent = "scrivi qualcosa 🙂"; return; }
   if(!API){ msg.textContent = "il diario non è ancora attivo, ci sto lavorando 🙂"; return; }
   btn.disabled = true; btn.textContent = "scrivo…"; msg.textContent = "";
+  const inizio = Date.now() - 60000;
+  let ok = false;
   try{
-    const r = await fetch(API, { method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"},
+    const ctl = new AbortController(), t = setTimeout(()=> ctl.abort(), 25000);
+    const r = await fetch(API, { method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, signal: ctl.signal,
       body: JSON.stringify({chi, testo, codice:CODICE}) });
-    const j = await r.json();
-    if(!j.ok) throw 0;
-    $("#testo").value = ""; msg.textContent = "scritto 🤍";
+    clearTimeout(t);
+    ok = (await r.json()).ok === true;
+  }catch(_){}
+  // anche se Google ha risposto male, controlla se la pagina è stata scritta lo stesso
+  let lista = [];
+  if(!ok){
+    msg.textContent = "controllo che sia arrivato…";
+    lista = await carica();
+    ok = lista.some(v => v.chi === chi && v.testo.trim() === testo && new Date(v.quando) >= inizio);
+  }else{
     await carica();
+  }
+  if(ok){
+    $("#testo").value = ""; msg.textContent = "scritto 🤍";
     const n = document.querySelector(".voce.nuova"); if(n) n.scrollIntoView({behavior:"smooth", block:"center"});
-  }catch(_){ msg.textContent = "non è andato, riprova tra poco"; }
+  }else{
+    msg.textContent = "non è andato, riprova tra poco";
+  }
   btn.disabled = false; btn.textContent = "scrivi nel diario";
 });
 
